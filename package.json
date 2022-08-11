@@ -25,7 +25,7 @@
   "dependencies": {
     "@nestjs/common": "^9.0.0",
     "@nestjs/config": "2.2.0",
-    "@nestjs/core": "^9.0.0",
+    "@nestjs/core": "^9.0.9",
     "@nestjs/platform-express": "^9.0.0",
     "node-hue-api": "5.0.0-beta.13",
     "reflect-metadata": "^0.1.13",
