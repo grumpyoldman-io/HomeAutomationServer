@@ -2,7 +2,9 @@ import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { model, v3 } from 'node-hue-api';
 import type { Api } from 'node-hue-api/dist/esm/api/Api';
-import { Light } from './types';
+
+import { NotFoundError } from '../Errors';
+import { Light } from '../types';
 
 @Injectable()
 export class HueService {
@@ -18,13 +20,11 @@ export class HueService {
     this.defaultState = new v3.lightStates.LightState();
     this.defaultState.bri(254).hue(14948).sat(143).ct(365).effect('none');
 
-    const bridgeHost = config.get<string>('HUE_HOST');
-    const bridgeUser = config.get<string>('HUE_USER');
-    if (bridgeHost === undefined || bridgeHost === '') {
-      throw new Error('Incorrect bridge host');
-    }
-    if (bridgeUser === undefined || bridgeUser === '') {
-      throw new Error('Incorrect bridge user');
+    const bridgeHost = config.getOrThrow<string>('HUE_HOST');
+    const bridgeUser = config.getOrThrow<string>('HUE_USER');
+
+    if (bridgeHost === '' || bridgeUser === '') {
+      throw new Error('Incorrect bridge host / user');
     }
 
     this.bridgeConfig = {
@@ -44,6 +44,7 @@ export class HueService {
 
     const lights = hueLights.map<Light>((hueLight) => {
       const state = hueLight.state as Pick<Light, 'on'>;
+
       return {
         id: hueLight.id.toString(),
         name: hueLight.name,
@@ -64,7 +65,7 @@ export class HueService {
     const light = lights.find((light) => light.name.toLowerCase() === saveName);
 
     if (light === undefined) {
-      throw new Error('Light not found');
+      throw new NotFoundError('Light not found');
     }
 
     return light;
@@ -80,7 +81,7 @@ export class HueService {
     const light = lights.find((light) => light.name.toLowerCase() === saveName);
 
     if (light === undefined) {
-      throw new Error('Light not found');
+      throw new NotFoundError('Light not found');
     }
 
     await this.api.lights.setLightState(

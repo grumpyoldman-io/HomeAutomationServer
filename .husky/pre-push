@@ -1,4 +1,4 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-yarn format && yarn validate && yarn lint && yarn test
+yarn format && yarn validate && yarn lint && yarn test:cov

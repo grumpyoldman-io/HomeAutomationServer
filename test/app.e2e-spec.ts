@@ -1,27 +1,12 @@
-import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
+import { Test, TestingModule } from '@nestjs/testing';
 import * as request from 'supertest';
-import { AppModule } from '../src/app.module';
-import { HueService } from '../src/hue.service';
 
-const mockLights = [{ id: '1', name: 'mock-light-1', on: false }];
-const mockHueService = {
-  getAllLights: () => mockLights,
-  getLight: (name: string) => {
-    const light = mockLights.find((light) => light.name === name);
-    if (light === undefined) {
-      throw new Error('Light not found');
-    }
-    return light;
-  },
-  toggleLight: (name: string) => {
-    const light = mockLights.find((light) => light.name === name);
-    if (light === undefined) {
-      throw new Error('Light not found');
-    }
-    return 'ok';
-  },
-};
+import { mockLights } from '@mocks/lights';
+import { MockHueService } from '@mocks/services';
+
+import { AppModule } from '../src/App.module';
+import { HueService } from '../src/Hue/Hue.service';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
@@ -31,7 +16,7 @@ describe('AppController (e2e)', () => {
       imports: [AppModule],
     })
       .overrideProvider(HueService)
-      .useValue(mockHueService)
+      .useValue(MockHueService)
       .compile();
 
     app = moduleFixture.createNestApplication();
@@ -53,14 +38,19 @@ describe('AppController (e2e)', () => {
     return request(app.getHttpServer())
       .get('/lights')
       .expect(200)
-      .expect({ 'mock-light-1': { id: '1', name: 'mock-light-1', on: false } });
+      .expect(
+        mockLights.reduce(
+          (state, light) => ({ ...state, [light.name.toLowerCase()]: light }),
+          {},
+        ),
+      );
   });
 
-  it('/lights/mock-light-1 (GET)', () => {
+  it(`/lights/${mockLights[0].name} (GET)`, () => {
     return request(app.getHttpServer())
-      .get('/lights/mock-light-1')
+      .get(`/lights/${mockLights[0].name}`)
       .expect(200)
-      .expect({ 'mock-light-1': { id: '1', name: 'mock-light-1', on: false } });
+      .expect({ [mockLights[0].name]: mockLights[0] });
   });
 
   it('/lights/non-existing-light (GET)', () => {
@@ -70,9 +60,9 @@ describe('AppController (e2e)', () => {
       .expect({ status: 404, error: 'Light not found' });
   });
 
-  it('/lights/mock-light-1/toggle (GET)', () => {
+  it(`/lights/${mockLights[0].name}/toggle (GET)`, () => {
     return request(app.getHttpServer())
-      .get('/lights/mock-light-1/toggle')
+      .get(`/lights/${mockLights[0].name}/toggle`)
       .expect(200)
       .expect('ok');
   });

@@ -1,10 +1,11 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { HueService } from './hue.service';
-import { LightMap } from './types';
+
+import { HueService } from '../Hue/Hue.service';
+import { LightMap } from '../types';
 
 @Injectable()
-export class LightService {
-  private readonly logger = new Logger(LightService.name);
+export class LightsService {
+  private readonly logger = new Logger(LightsService.name);
 
   constructor(private readonly hue: HueService) {}
 
@@ -13,6 +14,7 @@ export class LightService {
       this.logger.log('Getting status for all');
 
       const lights = await this.hue.getAllLights();
+
       const lightMap = lights.reduce<LightMap>(
         (state, light) => ({ ...state, [light.name.toLowerCase()]: light }),
         {},

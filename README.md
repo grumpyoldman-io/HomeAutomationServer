@@ -41,7 +41,7 @@ $ yarn start:dev
 $ yarn start:prod
 ```
 
-## Hygene
+## Hygiene
 
 ```bash
 # lint project files with ESLint
