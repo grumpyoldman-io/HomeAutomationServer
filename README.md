@@ -24,9 +24,11 @@ prerequisites:
 
 The server will connect to your local Hue Bridge on startup, and will expose the following endpoints:
 
-- /lights -> Show status of all connected lights
-- /lights/[name] -> Show status of light with specific name
-- /lights/[name]/toggle -> Will switch a light on/off
+- (get) /lights -> Show status of all connected lights
+- (get) /lights/[name] -> Show status of light with specific name
+- (get) /lights/[name]/toggle -> Will switch a light on/off
+
+You can also check out the OpenApi specs on `/docs` or `/docs-json` when running the server
 
 ## Running the app
 
@@ -41,7 +43,7 @@ $ yarn start:dev
 $ yarn start:prod
 ```
 
-## Hygene
+## Hygiene
 
 ```bash
 # lint project files with ESLint
