@@ -1,16 +1,20 @@
-import { ConfigService } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Test } from '@nestjs/testing';
+
+import { ENV_PATHS } from '../Constants';
 
 import { HueModule } from './Hue.module';
 import { HueService } from './Hue.service';
 
 describe('HueModule', () => {
   it('should compile the module', async () => {
-    process.env.HUE_HOST = 'HUE-HOST';
-    process.env.HUE_USER = 'HUE-USER';
-
     const module = await Test.createTestingModule({
-      imports: [HueModule],
+      imports: [
+        ConfigModule.forRoot({
+          envFilePath: ENV_PATHS,
+        }),
+        HueModule,
+      ],
     }).compile();
 
     expect(module).toBeDefined();

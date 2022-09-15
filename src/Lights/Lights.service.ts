@@ -30,11 +30,19 @@ export class LightsService {
     return { [name.toLowerCase()]: light };
   }
 
-  async toggle(name: string): Promise<string> {
+  async set(name: string, on: boolean): ReturnType<HueService['setLight']> {
+    this.logger.log(`Set light ${name} to ${on ? 'on' : 'off'}`);
+
+    const newState = await this.hue.setLight(name, on);
+
+    return newState;
+  }
+
+  async toggle(name: string): ReturnType<HueService['toggleLight']> {
     this.logger.log(`Toggling light ${name} on/off`);
 
-    await this.hue.toggleLight(name);
+    const newState = await this.hue.toggleLight(name);
 
-    return 'ok';
+    return newState;
   }
 }

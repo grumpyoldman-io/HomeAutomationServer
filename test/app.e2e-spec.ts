@@ -64,7 +64,7 @@ describe('Home Automation Server (e2e)', () => {
     return request(app.getHttpServer())
       .get(`/lights/${mockLights[0].name}/toggle`)
       .expect(200)
-      .expect('ok');
+      .expect('true');
   });
 
   it('/lights/non-existing-light/toggle (GET)', () => {
