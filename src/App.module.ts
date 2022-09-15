@@ -6,6 +6,7 @@ import { ENV_PATHS } from './Constants';
 import { LightsModule } from './Lights/Lights.module';
 
 @Module({
+  providers: [Logger],
   imports: [
     ConfigModule.forRoot({
       envFilePath: ENV_PATHS,
@@ -15,10 +16,9 @@ import { LightsModule } from './Lights/Lights.module';
   controllers: [AppController],
 })
 export class AppModule {
-  private readonly logger = new Logger(AppModule.name);
   static port: string;
 
-  constructor(configService: ConfigService) {
+  constructor(configService: ConfigService, private readonly logger: Logger) {
     AppModule.port = configService.getOrThrow<string>('PORT');
   }
 

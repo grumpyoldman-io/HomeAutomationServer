@@ -9,7 +9,6 @@ import {
 import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import { NotFoundError } from '../Errors';
-import { LightMap } from '../types';
 
 import { LightsService } from './Lights.service';
 
@@ -23,7 +22,7 @@ export class LightsController {
   @ApiOperation({
     summary: 'Get status for all lights',
   })
-  async status(): Promise<LightMap> {
+  async status(): ReturnType<LightsService['status']> {
     return await this.service.status();
   }
 
@@ -35,7 +34,9 @@ export class LightsController {
   @ApiParam({ name: 'name', required: true })
   @ApiResponse({ status: 200, description: 'Status of single light' })
   @ApiResponse({ status: 404, description: 'Light not found' })
-  async light(@Param('name') name: string): Promise<LightMap> {
+  async light(
+    @Param('name') name: string,
+  ): ReturnType<LightsService['status']> {
     try {
       return await this.service.status(name);
     } catch (error) {
@@ -51,9 +52,31 @@ export class LightsController {
   @ApiParam({ name: 'name', required: true })
   @ApiResponse({ status: 200, description: 'Toggled single light' })
   @ApiResponse({ status: 404, description: 'Light not found' })
-  async lightToggle(@Param('name') name: string): Promise<string> {
+  async lightToggle(
+    @Param('name') name: string,
+  ): ReturnType<LightsService['toggle']> {
     try {
       return await this.service.toggle(name);
+    } catch (error) {
+      throw this.handleError(error);
+    }
+  }
+
+  @Get(':name/set/:val')
+  @Header('Cache-Control', 'none')
+  @ApiOperation({
+    summary: 'Set a light on/off',
+  })
+  @ApiParam({ name: 'name', required: true })
+  @ApiParam({ name: 'val', required: true, enum: ['on', 'off'] })
+  @ApiResponse({ status: 200, description: 'Set single light' })
+  @ApiResponse({ status: 404, description: 'Light not found' })
+  async lightSet(
+    @Param('name') name: string,
+    @Param('val') val: string,
+  ): ReturnType<LightsService['set']> {
+    try {
+      return await this.service.set(name, val === 'on');
     } catch (error) {
       throw this.handleError(error);
     }

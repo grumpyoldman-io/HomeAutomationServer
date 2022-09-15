@@ -14,11 +14,25 @@ export class HueService {
   private readonly logger = new Logger(HueService.name);
 
   private readonly bridgeConfig: { host: string; user: string };
-  private readonly defaultState: model.LightState;
+  private readonly states: { on: model.LightState; off: model.LightState };
 
   constructor(private config: ConfigService) {
-    this.defaultState = new v3.lightStates.LightState();
-    this.defaultState.bri(254).hue(14948).sat(143).ct(365).effect('none');
+    this.states = {
+      on: new v3.lightStates.LightState()
+        .bri(254)
+        .hue(14948)
+        .sat(143)
+        .ct(365)
+        .effect('none')
+        .on(),
+      off: new v3.lightStates.LightState()
+        .bri(254)
+        .hue(14948)
+        .sat(143)
+        .ct(365)
+        .effect('none')
+        .off(),
+    };
 
     const bridgeHost = config.getOrThrow<string>('HUE_HOST');
     const bridgeUser = config.getOrThrow<string>('HUE_USER');
@@ -33,8 +47,8 @@ export class HueService {
     };
   }
 
-  onModuleInit() {
-    this.connect();
+  async onModuleInit() {
+    await this.connect();
   }
 
   async getAllLights(): Promise<Light[]> {
@@ -71,7 +85,32 @@ export class HueService {
     return light;
   }
 
-  async toggleLight(name: Light['name']): Promise<void> {
+  async setLight(name: Light['name'], on: Light['on']): Promise<boolean> {
+    await this.connect();
+
+    const lights = await this.getAllLights();
+
+    const saveName = name.toLowerCase();
+
+    const light = lights.find((light) => light.name.toLowerCase() === saveName);
+
+    if (light === undefined) {
+      throw new NotFoundError('Light not found');
+    }
+
+    if (light.on === on) {
+      return on;
+    }
+
+    await this.api.lights.setLightState(
+      light.id,
+      on ? this.states.on : this.states.off,
+    );
+
+    return on;
+  }
+
+  async toggleLight(name: Light['name']): Promise<boolean> {
     await this.connect();
 
     const lights = await this.getAllLights();
@@ -86,8 +125,10 @@ export class HueService {
 
     await this.api.lights.setLightState(
       light.id,
-      light.on ? this.defaultState.off() : this.defaultState.on(),
+      light.on ? this.states.off : this.states.on,
     );
+
+    return !light.on;
   }
 
   private async connect(): Promise<void> {
@@ -128,7 +169,7 @@ export class HueService {
       lights
         .filter((light) => light.on)
         .map((light) =>
-          this.api.lights.setLightState(light.id, this.defaultState.off()),
+          this.api.lights.setLightState(light.id, this.states.off),
         ),
     );
   }

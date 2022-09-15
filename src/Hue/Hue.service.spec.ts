@@ -1,8 +1,7 @@
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
 import { model, v3 } from 'node-hue-api';
 import type { Api } from 'node-hue-api/dist/esm/api/Api';
-import waitForExpect from 'wait-for-expect';
 
 import { mockLights } from '@mocks/lights';
 
@@ -69,6 +68,21 @@ describe('HueService', () => {
   });
 
   describe('initialization', () => {
+    it('validate the config', () => {
+      const mockConfig = (config: Record<string, string>) =>
+        ({
+          getOrThrow: (str: keyof typeof config) => config[str],
+        } as unknown as ConfigService);
+
+      expect(() => new HueService(mockConfig({ HUE_HOST: '' }))).toThrowError(
+        'Incorrect bridge host / user',
+      );
+
+      expect(() => new HueService(mockConfig({ HUE_USER: '' }))).toThrowError(
+        'Incorrect bridge host / user',
+      );
+    });
+
     it('should create the default light state', () => {
       expect(MockLightState.bri).toHaveBeenNthCalledWith(1, 254);
       expect(MockLightState.hue).toHaveBeenNthCalledWith(1, 14948);
@@ -91,13 +105,11 @@ describe('HueService', () => {
     });
 
     it('should reset all the lights', async () => {
-      service.onModuleInit();
+      await service.onModuleInit();
 
-      await waitForExpect(() => {
-        expect(MockApi.lights.setLightState).toHaveBeenCalledTimes(
-          mockHueLights.length,
-        );
-      });
+      expect(MockApi.lights.setLightState).toHaveBeenCalledTimes(
+        mockHueLights.length,
+      );
     });
   });
 
@@ -123,17 +135,32 @@ describe('HueService', () => {
     });
   });
 
+  describe('setLight', () => {
+    it('should return a formatted single lights', async () => {
+      await service.setLight(mockLights[0].name, false);
+
+      expect(MockApi.lights.setLightState).toHaveBeenNthCalledWith(
+        1,
+        '1',
+        'off',
+      );
+
+      // Light not found
+      expect(service.setLight('NonExistentLight', true)).rejects.toEqual(
+        new NotFoundError('Light not found'),
+      );
+    });
+  });
+
   describe('toggleLight', () => {
     it('should return a formatted single lights', async () => {
-      service.toggleLight(mockLights[0].name);
+      await service.toggleLight(mockLights[0].name);
 
-      await waitForExpect(() => {
-        expect(MockApi.lights.setLightState).toHaveBeenNthCalledWith(
-          1,
-          '1',
-          'off',
-        );
-      });
+      expect(MockApi.lights.setLightState).toHaveBeenNthCalledWith(
+        1,
+        '1',
+        'off',
+      );
 
       // Light not found
       expect(service.toggleLight('NonExistentLight')).rejects.toEqual(

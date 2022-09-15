@@ -15,6 +15,17 @@ export const MockHueService: MockService<HueService> = {
 
     return light;
   },
+  setLight: (name: string, on: boolean) => {
+    const light = mockLights.find((light) => light.name === name);
+
+    if (light === undefined) {
+      throw new NotFoundError('Light not found');
+    }
+
+    light.on = on;
+
+    return light.on;
+  },
   toggleLight: (name: string) => {
     const light = mockLights.find((light) => light.name === name);
 
@@ -24,12 +35,12 @@ export const MockHueService: MockService<HueService> = {
 
     light.on = !light.on;
 
-    return 'ok';
+    return light.on;
   },
 };
 
 export const MockLightsService: MockService<LightsService> = {
-  status: (name?: string) => {
+  status: jest.fn(async (name?: string) => {
     if (name === undefined) {
       return mockLights.reduce(
         (state, light) => ({ ...state, [light.name.toLowerCase()]: light }),
@@ -46,16 +57,25 @@ export const MockLightsService: MockService<LightsService> = {
     return {
       [light?.name]: light,
     };
-  },
-  toggle: (name: string) => {
+  }),
+  set: jest.fn(async (name: string, on: boolean) => {
     const light = mockLights.find((light) => light.name === name);
 
     if (light === undefined) {
       throw new NotFoundError('Light not found');
     }
 
-    return 'ok';
-  },
+    return on;
+  }),
+  toggle: jest.fn(async (name: string) => {
+    const light = mockLights.find((light) => light.name === name);
+
+    if (light === undefined) {
+      throw new NotFoundError('Light not found');
+    }
+
+    return !light.on;
+  }),
 };
 
 type MockService<S> = Record<
