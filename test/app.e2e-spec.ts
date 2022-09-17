@@ -3,9 +3,10 @@ import { Test, TestingModule } from '@nestjs/testing';
 import * as request from 'supertest';
 
 import { mockLights } from '@mocks/lights';
-import { MockHueService } from '@mocks/services';
+import { MockHomeKitService, MockHueService } from '@mocks/services';
 
 import { AppModule } from '../src/App.module';
+import { HomeKitService } from '../src/HomeKit/HomeKit.service';
 import { HueService } from '../src/Hue/Hue.service';
 
 describe('Home Automation Server (e2e)', () => {
@@ -17,6 +18,8 @@ describe('Home Automation Server (e2e)', () => {
     })
       .overrideProvider(HueService)
       .useValue(MockHueService)
+      .overrideProvider(HomeKitService)
+      .useValue(MockHomeKitService)
       .compile();
 
     app = moduleFixture.createNestApplication();
@@ -70,6 +73,27 @@ describe('Home Automation Server (e2e)', () => {
   it('/lights/non-existing-light/toggle (GET)', () => {
     return request(app.getHttpServer())
       .get('/lights/non-existing-light/toggle')
+      .expect(404)
+      .expect({ status: 404, error: 'Light not found' });
+  });
+
+  it(`/lights/${mockLights[0].name}/set/on (GET)`, () => {
+    return request(app.getHttpServer())
+      .get(`/lights/${mockLights[0].name}/set/on`)
+      .expect(200)
+      .expect('true');
+  });
+
+  it(`/lights/${mockLights[0].name}/set/off (GET)`, () => {
+    return request(app.getHttpServer())
+      .get(`/lights/${mockLights[0].name}/set/off`)
+      .expect(200)
+      .expect('false');
+  });
+
+  it('/lights/non-existing-light/set/on (GET)', () => {
+    return request(app.getHttpServer())
+      .get('/lights/non-existing-light/set/on')
       .expect(404)
       .expect({ status: 404, error: 'Light not found' });
   });

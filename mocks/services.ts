@@ -1,3 +1,5 @@
+import { HomeKitService } from 'src/HomeKit/HomeKit.service';
+
 import { NotFoundError } from '../src/Errors';
 import { HueService } from '../src/Hue/Hue.service';
 import { LightsService } from '../src/Lights/Lights.service';
@@ -38,6 +40,10 @@ export const MockHueService: MockService<HueService> = {
     return light.on;
   },
 };
+
+export const MockHomeKitService = {
+  bridgeUuid: 'mock-home-kit-bridge',
+} as unknown as MockService<HomeKitService>;
 
 export const MockLightsService: MockService<LightsService> = {
   status: jest.fn(async (name?: string) => {

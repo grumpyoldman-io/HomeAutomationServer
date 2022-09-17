@@ -3,6 +3,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 
 import { AppController } from './App.controller';
 import { ENV_PATHS } from './Constants';
+import { HomeKitModule } from './HomeKit/HomeKit.module';
 import { LightsModule } from './Lights/Lights.module';
 
 @Module({
@@ -12,6 +13,7 @@ import { LightsModule } from './Lights/Lights.module';
       envFilePath: ENV_PATHS,
     }),
     LightsModule,
+    HomeKitModule,
   ],
   controllers: [AppController],
 })

@@ -9,5 +9,6 @@ import { LightsService } from './Lights.service';
   imports: [HueModule],
   controllers: [LightsController],
   providers: [LightsService],
+  exports: [LightsService],
 })
 export class LightsModule {}
