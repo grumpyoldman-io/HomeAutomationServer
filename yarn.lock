@@ -1387,7 +1387,7 @@ array-flatten@1.1.1:
   resolved "https://registry.yarnpkg.com/array-flatten/-/array-flatten-1.1.1.tgz#9a5f699051b1e7073328f2a008968b64ea2955d2"
   integrity sha512-PCVAQswWemu6UdxsDFFX/+gVeYqKAod3D3UVm91jHwynguOwAvYPhx8nNlM++NqRcK6CxxpUafjmhIdKiHibqg==
 
-array-flatten@^2.1.2:
+array-flatten@^2.1.0, array-flatten@^2.1.2:
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/array-flatten/-/array-flatten-2.1.2.tgz#24ef80a28c1a893617e2149b0c6d0d788293b099"
   integrity sha512-hNfzcOV8W4NdualtqBFPyVO+54DSJuZGY9qT4pRroB6S9e3iiido2ISIC5h9R2sPJ8H3FHCIiEnsv1lPXO3KtQ==
@@ -1541,6 +1541,18 @@ bonjour-hap@~3.6.3:
     multicast-dns "^7.2.3"
     multicast-dns-service-types "^1.1.0"
 
+bonjour@^3.5.0:
+  version "3.5.0"
+  resolved "https://registry.yarnpkg.com/bonjour/-/bonjour-3.5.0.tgz#8e890a183d8ee9a2393b3844c691a42bcf7bc9f5"
+  integrity sha512-RaVTblr+OnEli0r/ud8InrU7D+G0y6aJhlxaLa6Pwty4+xoxboF1BsUI45tujvRpbj9dQVoglChqonGAsjEBYg==
+  dependencies:
+    array-flatten "^2.1.0"
+    deep-equal "^1.0.1"
+    dns-equal "^1.0.0"
+    dns-txt "^2.0.2"
+    multicast-dns "^6.0.1"
+    multicast-dns-service-types "^1.1.0"
+
 bottleneck@^2.19.5:
   version "2.19.5"
   resolved "https://registry.yarnpkg.com/bottleneck/-/bottleneck-2.19.5.tgz#5df0b90f59fd47656ebe63c78a98419205cadd91"
@@ -1589,6 +1601,11 @@ buffer-from@^1.0.0:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/buffer-from/-/buffer-from-1.1.2.tgz#2b146a6fd72e80b4f55d255f35ed59a3a9a41bd5"
   integrity sha512-E+XQCRwSbaaiChtv6k6Dwgc+bx+Bs6vuKJHHl5kox/BaKbhiXzqQOwK4cO22yElGp2OCmjwVhT3HmxgyPGnJfQ==
+
+buffer-indexof@^1.0.0:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/buffer-indexof/-/buffer-indexof-1.1.1.tgz#52fabcc6a606d1a00302802648ef68f639da268c"
+  integrity sha512-4/rOEg86jivtPTeOUUT61jJO1Ya1TrR/OkqCSZDyq84WJh3LuuiphBYJN+fm5xufIk4XAFcEwte/8WzC8If/1g==
 
 buffer@^5.5.0:
   version "5.7.1"
@@ -1917,6 +1934,18 @@ dedent@^0.7.0:
   resolved "https://registry.yarnpkg.com/dedent/-/dedent-0.7.0.tgz#2495ddbaf6eb874abb0e1be9df22d2e5a544326c"
   integrity sha512-Q6fKUPqnAHAyhiUgFU7BUzLiv0kd8saH9al7tnu5Q/okj6dnupxyTgFIBjVzJATdfIAm9NAsvXNzjaKa+bxVyA==
 
+deep-equal@^1.0.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/deep-equal/-/deep-equal-1.1.1.tgz#b5c98c942ceffaf7cb051e24e1434a25a2e6076a"
+  integrity sha512-yd9c5AdiqVcR+JjcwUQb9DkhJc8ngNr0MahEBGvDiJw8puWab2yZlh+nkasOnZP+EGTAP6rRp2JzJhJZzvNF8g==
+  dependencies:
+    is-arguments "^1.0.4"
+    is-date-object "^1.0.1"
+    is-regex "^1.0.4"
+    object-is "^1.0.1"
+    object-keys "^1.1.1"
+    regexp.prototype.flags "^1.2.0"
+
 deep-equal@^2.0.5:
   version "2.0.5"
   resolved "https://registry.yarnpkg.com/deep-equal/-/deep-equal-2.0.5.tgz#55cd2fe326d83f9cbf7261ef0e060b3f724c5cb9"
@@ -2000,12 +2029,32 @@ dir-glob@^3.0.1:
   dependencies:
     path-type "^4.0.0"
 
+dns-equal@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/dns-equal/-/dns-equal-1.0.0.tgz#b39e7f1da6eb0a75ba9c17324b34753c47e0654d"
+  integrity sha512-z+paD6YUQsk+AbGCEM4PrOXSss5gd66QfcVBFTKR/HpFL9jCqikS94HYwKww6fQyO7IxrIIyUu+g0Ka9tUS2Cg==
+
+dns-packet@^1.3.1:
+  version "1.3.4"
+  resolved "https://registry.yarnpkg.com/dns-packet/-/dns-packet-1.3.4.tgz#e3455065824a2507ba886c55a89963bb107dec6f"
+  integrity sha512-BQ6F4vycLXBvdrJZ6S3gZewt6rcrks9KBgM9vrhW+knGRqc8uEdT7fuCwloc7nny5xNoMJ17HGH0R/6fpo8ECA==
+  dependencies:
+    ip "^1.1.0"
+    safe-buffer "^5.0.1"
+
 dns-packet@^5.2.2:
   version "5.4.0"
   resolved "https://registry.yarnpkg.com/dns-packet/-/dns-packet-5.4.0.tgz#1f88477cf9f27e78a213fb6d118ae38e759a879b"
   integrity sha512-EgqGeaBB8hLiHLZtp/IbaDQTL8pZ0+IvwzSHA6d7VyMDM+B9hgddEMa9xjK5oYnw0ci0JQ6g2XCD7/f6cafU6g==
   dependencies:
     "@leichtgewicht/ip-codec" "^2.0.1"
+
+dns-txt@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/dns-txt/-/dns-txt-2.0.2.tgz#b91d806f5d27188e4ab3e7d107d881a1cc4642b6"
+  integrity sha512-Ix5PrWjphuSoUXV/Zv5gaFHjnaJtb02F2+Si3Ht9dyJ87+Z/lMmy+dpNHtTGraNK958ndXq2i+GLkWsWHcKaBQ==
+  dependencies:
+    buffer-indexof "^1.0.0"
 
 doctrine@^2.1.0:
   version "2.1.0"
@@ -3022,7 +3071,7 @@ interpret@^1.0.0:
   resolved "https://registry.yarnpkg.com/interpret/-/interpret-1.4.0.tgz#665ab8bc4da27a774a40584e812e3e0fa45b1a1e"
   integrity sha512-agE4QfB2Lkp9uICn7BAqoscw4SZP9kTE2hxiFI3jBPmXJfdqiahTbUuKGsMoN2GtqL9AxhYioAcVvgsb1HvRbA==
 
-ip@^1.1.5:
+ip@^1.1.0, ip@^1.1.5:
   version "1.1.8"
   resolved "https://registry.yarnpkg.com/ip/-/ip-1.1.8.tgz#ae05948f6b075435ed3307acce04629da8cdbf48"
   integrity sha512-PuExPYUiu6qMBQb4l06ecm6T6ujzhmh+MeJcW9wa89PoAz5pvd4zPgN5WJV104mb6S2T1AwNIAaB70JNrLQWhg==
@@ -3140,7 +3189,7 @@ is-number@^7.0.0:
   resolved "https://registry.yarnpkg.com/is-number/-/is-number-7.0.0.tgz#7535345b896734d5f80c4d06c50955527a14f12b"
   integrity sha512-41Cifkg6e8TylSpdtTpeLVMqvSBEVzTttHvERD741+pnZ8ANv0004MRL43QKPDlK9cGvNp6NZWZUBlbGXYxxng==
 
-is-regex@^1.1.1, is-regex@^1.1.4:
+is-regex@^1.0.4, is-regex@^1.1.1, is-regex@^1.1.4:
   version "1.1.4"
   resolved "https://registry.yarnpkg.com/is-regex/-/is-regex-1.1.4.tgz#eef5663cd59fa4c0ae339505323df6854bb15958"
   integrity sha512-kvRdxDsxZjhzUX07ZnLydzS1TU/TJlTUHHY4YLL87e37oUA49DfkLqgy+VjFocowy29cKvcSiu+kIv728jTTVg==
@@ -3940,6 +3989,14 @@ multicast-dns-service-types@^1.1.0:
   resolved "https://registry.yarnpkg.com/multicast-dns-service-types/-/multicast-dns-service-types-1.1.0.tgz#899f11d9686e5e05cb91b35d5f0e63b773cfc901"
   integrity sha512-cnAsSVxIDsYt0v7HmC0hWZFwwXSh+E6PgCrREDuN/EsjgLwA5XRmlMHhSiDPrt6HxY1gTivEa/Zh7GtODoLevQ==
 
+multicast-dns@^6.0.1:
+  version "6.2.3"
+  resolved "https://registry.yarnpkg.com/multicast-dns/-/multicast-dns-6.2.3.tgz#a0ec7bd9055c4282f790c3c82f4e28db3b31b229"
+  integrity sha512-ji6J5enbMyGRHIAkAOu3WdV8nggqviKCEKtXcOqfphZZtQrmHKycfynJ2V7eVPUA4NhJ6V7Wf4TmGbTwKE9B6g==
+  dependencies:
+    dns-packet "^1.3.1"
+    thunky "^1.0.2"
+
 multicast-dns@^7.2.3:
   version "7.2.5"
   resolved "https://registry.yarnpkg.com/multicast-dns/-/multicast-dns-7.2.5.tgz#77eb46057f4d7adbd16d9290fa7299f6fa64cced"
@@ -3982,12 +4039,13 @@ node-fetch@^2.6.1:
   dependencies:
     whatwg-url "^5.0.0"
 
-node-hue-api@5.0.0-beta.13:
-  version "5.0.0-beta.13"
-  resolved "https://registry.yarnpkg.com/node-hue-api/-/node-hue-api-5.0.0-beta.13.tgz#004a5ebc41415e8126cd253c5533d2b6624ad944"
-  integrity sha512-DedPjqveYYChq919eMlQKAmggbOBL6nZCytG/8nhe1yShdN1vbxrlMnHcPYyp21zJ8JkslpaUcNJ40ZmE/eiow==
+node-hue-api@5.0.0-beta.14:
+  version "5.0.0-beta.14"
+  resolved "https://registry.yarnpkg.com/node-hue-api/-/node-hue-api-5.0.0-beta.14.tgz#dca326df7f424ee60be89dd02e282a5cde871778"
+  integrity sha512-IlrIehMEqMsGZPKT2FraCwHsK2po7Rz5c6C/1wB3QCQJy3edZZQYG4dEMSCa1CTj0p69tq4au+T2fg8vFg0uMg==
   dependencies:
     "@peter-murray/hue-bridge-model" "^2.0.1"
+    bonjour "^3.5.0"
     bottleneck "^2.19.5"
     node-fetch "^2.6.1"
 
@@ -4036,7 +4094,7 @@ object-inspect@^1.12.0, object-inspect@^1.12.2, object-inspect@^1.9.0:
   resolved "https://registry.yarnpkg.com/object-inspect/-/object-inspect-1.12.2.tgz#c0641f26394532f28ab8d796ab954e43c009a8ea"
   integrity sha512-z+cPxW0QGUp0mcqcsgQyLVRDoXFQbXOwBaqyF7VIgI4TWNQsDHrBpUQslRmIfAoYWdYzs6UlKJtB2XJpTaNSpQ==
 
-object-is@^1.1.4:
+object-is@^1.0.1, object-is@^1.1.4:
   version "1.1.5"
   resolved "https://registry.yarnpkg.com/object-is/-/object-is-1.1.5.tgz#b9deeaa5fc7f1846a0faecdceec138e5778f53ac"
   integrity sha512-3cyDsyHgtmi7I7DfSSI2LDp6SK2lwvtbg0p0R1e0RvTqF5ceGx+K2dfSjm1bKDMVCFEDAQvy+o8c6a7VujOddw==
@@ -4417,7 +4475,7 @@ reflect-metadata@0.1.13:
   resolved "https://registry.yarnpkg.com/reflect-metadata/-/reflect-metadata-0.1.13.tgz#67ae3ca57c972a2aa1642b10fe363fe32d49dc08"
   integrity sha512-Ts1Y/anZELhSsjMcU605fU9RE4Oi3p5ORujwbIKXfWa+0Zxs510Qrmrce5/Jowq3cHSZSJqBjypxmHarc+vEWg==
 
-regexp.prototype.flags@^1.3.0, regexp.prototype.flags@^1.4.3:
+regexp.prototype.flags@^1.2.0, regexp.prototype.flags@^1.3.0, regexp.prototype.flags@^1.4.3:
   version "1.4.3"
   resolved "https://registry.yarnpkg.com/regexp.prototype.flags/-/regexp.prototype.flags-1.4.3.tgz#87cab30f80f66660181a3bb7bf5981a872b367ac"
   integrity sha512-fjggEOO3slI6Wvgjwflkc4NFRCTZAu5CnNfBd5qOMYhWdn67nJBBu34/TkD++eeFmd8C9r9jfXJ27+nSiRkSUA==
@@ -4525,7 +4583,7 @@ rxjs@^7.5.5:
   dependencies:
     tslib "^2.1.0"
 
-safe-buffer@5.2.1, safe-buffer@^5.1.0, safe-buffer@^5.1.1, safe-buffer@~5.2.0:
+safe-buffer@5.2.1, safe-buffer@^5.0.1, safe-buffer@^5.1.0, safe-buffer@^5.1.1, safe-buffer@~5.2.0:
   version "5.2.1"
   resolved "https://registry.yarnpkg.com/safe-buffer/-/safe-buffer-5.2.1.tgz#1eaf9fa9bdb1fdd4ec75f58f9cdb4e6b7827eec6"
   integrity sha512-rp3So07KcdmmKbGvgaNxQSJr7bGVSVk5S9Eq1F+ppbRo70+YeaDxkw5Dd8NPN+GD6bjnYm2VuPuCXmpuYvmCXQ==
