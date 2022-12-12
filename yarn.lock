@@ -831,10 +831,10 @@
     consola "^2.15.0"
     node-fetch "^2.6.1"
 
-"@peter-murray/hue-bridge-model@^2.0.1":
-  version "2.0.4"
-  resolved "https://registry.yarnpkg.com/@peter-murray/hue-bridge-model/-/hue-bridge-model-2.0.4.tgz#26f61234b4fa00058a6fcb523dfbc0da8b78915d"
-  integrity sha512-Vb4JnSUDqLCJgOT9j4wRddPZIw80Viz3Ou64FVYqvdCILNutBv0YZPCkolZm5wOFNgxSEvsSTQxxjcvPsgwweg==
+"@peter-murray/hue-bridge-model@^2.1.0":
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/@peter-murray/hue-bridge-model/-/hue-bridge-model-2.1.1.tgz#2b256b3a2d62d5556c223586f6d06af84f219cf6"
+  integrity sha512-RdnTRY6YOP0TS1z7elRuvD2LsxV+/fwZsl967Ihwvk/SUjQ0247plc6YRM2bEeDBUi06HpcE+tGV4GQBMlVAeg==
 
 "@sinclair/typebox@^0.24.1":
   version "0.24.28"
@@ -4172,12 +4172,12 @@ node-fetch@^2.6.1:
   dependencies:
     whatwg-url "^5.0.0"
 
-node-hue-api@5.0.0-beta.14:
-  version "5.0.0-beta.14"
-  resolved "https://registry.yarnpkg.com/node-hue-api/-/node-hue-api-5.0.0-beta.14.tgz#dca326df7f424ee60be89dd02e282a5cde871778"
-  integrity sha512-IlrIehMEqMsGZPKT2FraCwHsK2po7Rz5c6C/1wB3QCQJy3edZZQYG4dEMSCa1CTj0p69tq4au+T2fg8vFg0uMg==
+node-hue-api@5.0.0-beta.15:
+  version "5.0.0-beta.15"
+  resolved "https://registry.yarnpkg.com/node-hue-api/-/node-hue-api-5.0.0-beta.15.tgz#76c27a89f8777889a6ea752378f01959c9c577dc"
+  integrity sha512-euUoCyhLN2eK9I4+6cp51r78/41fLslBdIXZTpH/52OJ8bmsffEoUtW6ZRqE1WIjmSvsOwlDomdmnoW0RvGOlg==
   dependencies:
-    "@peter-murray/hue-bridge-model" "^2.0.1"
+    "@peter-murray/hue-bridge-model" "^2.1.0"
     bonjour "^3.5.0"
     bottleneck "^2.19.5"
     node-fetch "^2.6.1"

@@ -31,7 +31,7 @@
     "@nestjs/platform-express": "9.0.9",
     "@nestjs/swagger": "6.0.5",
     "hap-nodejs": "0.11.0",
-    "node-hue-api": "5.0.0-beta.14",
+    "node-hue-api": "5.0.0-beta.15",
     "reflect-metadata": "0.1.13",
     "rimraf": "3.0.2",
     "rxjs": "7.2.0"
