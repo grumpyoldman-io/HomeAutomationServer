@@ -53,10 +53,10 @@ describe('HomeKitService', () => {
     addService: jest.fn(),
   } as unknown as Accessory;
 
-  const mockedAccessory = jest.mocked(Accessory, true);
-  const mockedBridge = jest.mocked(Bridge, true);
-  const mockedService = jest.mocked(Service, true);
-  const mockedUuid = jest.mocked(uuid, true);
+  const mockedAccessory = jest.mocked(Accessory, { shallow: true });
+  const mockedBridge = jest.mocked(Bridge, { shallow: true });
+  const mockedService = jest.mocked(Service);
+  const mockedUuid = jest.mocked(uuid, { shallow: true });
 
   beforeAll(() => {
     mockedAccessory.mockReturnValue(mockAccessory);
