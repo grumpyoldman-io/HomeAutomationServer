@@ -43,7 +43,7 @@ const MockConnector = {
 
 describe('HueService', () => {
   let service: HueService;
-  const mockedV3 = jest.mocked(v3, true);
+  const mockedV3 = jest.mocked(v3);
 
   beforeAll(() => {
     mockedV3.lightStates.LightState.mockReturnValue(
