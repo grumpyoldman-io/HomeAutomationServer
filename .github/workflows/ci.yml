@@ -9,31 +9,6 @@ on:
     - cron: '43 6 * * 2'
 
 jobs:
-  # build:
-  #   name: 'Build 📦'
-  #   runs-on: ubuntu-latest
-  #   permissions:
-  #     contents: read
-  #   steps:
-  #     - name: Checkout code
-  #       uses: actions/checkout@v3
-  #     - name: Use Node.js
-  #       uses: actions/setup-node@v3
-  #       with:
-  #         node-version: lts/*
-  #         cache: 'yarn'
-  #     - name: Install dependencies
-  #       run: yarn install
-  #     - name: Run lint
-  #       run: yarn lint
-  #     - name: Build
-  #       run: yarn build
-  #     - name: Upload artifacts
-  #       uses: actions/upload-artifact@v3
-  #       with:
-  #         name: build
-  #         path: ./dist
-
   analyze:
     name: 'Analyze 🐛'
     runs-on: ubuntu-latest
@@ -113,21 +88,3 @@ jobs:
         env:
           PR_URL: ${{github.event.pull_request.html_url}}
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-
-  # deploy:
-  #   needs: build
-  #   name: 'Deploy 🚀'
-  #   runs-on: ubuntu-latest
-  #   if: ${{ github.ref == 'refs/heads/source' }}
-  #   steps:
-  #     - uses: actions/checkout@v3
-  #     - uses: actions/download-artifact@v3
-  #       with:
-  #         name: build
-  #         path: ./public
-  #     - uses: JamesIves/github-pages-deploy-action@v4.3.3
-  #       name: 'Deploy 🚀'
-  #       with:
-  #         branch: master
-  #         folder: public
-  #         clean: true
