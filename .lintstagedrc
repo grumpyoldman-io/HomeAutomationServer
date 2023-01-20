@@ -1,0 +1,7 @@
+{
+    "**/*.{js,ts}": [
+        "yarn validate",
+        "prettier --check",
+        "eslint"
+    ]
+}
