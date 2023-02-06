@@ -28,7 +28,7 @@
     "@nestjs/common": "9.3.3",
     "@nestjs/config": "2.2.0",
     "@nestjs/core": "9.2.1",
-    "@nestjs/platform-express": "9.2.1",
+    "@nestjs/platform-express": "9.3.3",
     "@nestjs/swagger": "6.1.4",
     "hap-nodejs": "0.11.0",
     "node-hue-api": "5.0.0-beta.15",
