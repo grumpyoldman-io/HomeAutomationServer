@@ -409,10 +409,10 @@
     source-map-support "^0.5.21"
     tslib "^2.4.0"
 
-"@homebridge/dbus-native@^0.5.0":
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/@homebridge/dbus-native/-/dbus-native-0.5.0.tgz#7c20500bd8486fbb389ee01ba63c3768958a5add"
-  integrity sha512-ei0jyHE/uNDl/6D6heRwsqnESrrXuSlfp+xlwGfg3mo1OqhKvyb/Kp73uxQyOJ3f1T1ocLSyA5uzoR1AbfaXIQ==
+"@homebridge/dbus-native@^0.5.1":
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/@homebridge/dbus-native/-/dbus-native-0.5.1.tgz#63560e134a555fe4d93fbc71e9e7c482a3f44f33"
+  integrity sha512-7xXz3R1W/kcbfQOGp32y4K7etqtowICR1vpx8j85KwPYXbNQrgiZ3zcwDYgDGBWq3FD9xzsW7h4YWJ4vTR2seQ==
   dependencies:
     "@homebridge/long" "^5.2.1"
     "@homebridge/put" "~0.0.8"
@@ -420,7 +420,7 @@
     hexy "^0.2.10"
     minimist "^1.2.6"
     safe-buffer "^5.1.1"
-    xml2js "^0.4.17"
+    xml2js "^0.5.0"
 
 "@homebridge/long@^5.2.1":
   version "5.2.1"
@@ -3072,13 +3072,13 @@ grapheme-splitter@^1.0.4:
   resolved "https://registry.yarnpkg.com/grapheme-splitter/-/grapheme-splitter-1.0.4.tgz#9cf3a665c6247479896834af35cf1dbb4400767e"
   integrity sha512-bzh50DW9kTPM00T8y4o8vQg89Di9oLJVLW/KaOGIXJWP/iqCN6WKYkbNOF04vFLJhwcpYUh9ydh/+5vpOqV4YQ==
 
-hap-nodejs@0.11.0:
-  version "0.11.0"
-  resolved "https://registry.yarnpkg.com/hap-nodejs/-/hap-nodejs-0.11.0.tgz#a2c252ed2953c364879570d0b49b09b6e5a7d147"
-  integrity sha512-ZKSc/DIECXH1vSlruv6tBVcO+LF/BDtjdVk7IIiAAS+KKjw9PylkXbtdU23mmLhM69BsWl9u+BuToAfkf0voSw==
+hap-nodejs@0.11.1:
+  version "0.11.1"
+  resolved "https://registry.yarnpkg.com/hap-nodejs/-/hap-nodejs-0.11.1.tgz#faedd805f11cb33b12150b41a508ac1158aace51"
+  integrity sha512-hJuGyjng2jlzhZsviWCldaokT7l7BE3iGmWdlE6DNmQFDTmiBN3deNksAZ2nt7qp5jYEv7ZUvW7WBZqJsLh3ww==
   dependencies:
     "@homebridge/ciao" "^1.1.5"
-    "@homebridge/dbus-native" "^0.5.0"
+    "@homebridge/dbus-native" "^0.5.1"
     bonjour-hap "~3.6.4"
     debug "^4.3.4"
     fast-srp-hap "~2.0.4"
@@ -5865,7 +5865,7 @@ write-file-atomic@^4.0.2:
     imurmurhash "^0.1.4"
     signal-exit "^3.0.7"
 
-xml2js@0.5.0, xml2js@^0.4.17:
+xml2js@0.5.0, xml2js@^0.5.0:
   version "0.5.0"
   resolved "https://registry.yarnpkg.com/xml2js/-/xml2js-0.5.0.tgz#d9440631fbb2ed800203fad106f2724f62c493b7"
   integrity sha512-drPFnkQJik/O+uPKpqSgr22mpuFHqKdbS835iAQrUC73L2F5WkboIRd63ai/2Yg6I1jzifPFKH2NTK+cfglkIA==
