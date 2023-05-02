@@ -73,4 +73,4 @@ $ yarn test:cov
 
 ## License
 
-Home Automation Server is [MIT licensed](LICENSE).
+Home Automation Server is [HL3-FULL licensed](LICENSE).
