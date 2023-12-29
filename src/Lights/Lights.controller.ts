@@ -40,6 +40,15 @@ export class LightsController {
     }
   }
 
+  @Get('store')
+  @Header('Cache-Control', 'none')
+  @ApiOperation({
+    summary: 'Store status for all lights',
+  })
+  async store(): ReturnType<LightsService['store']> {
+    return await this.service.store();
+  }
+
   @Get(':name')
   @Header('Cache-Control', 'none')
   @ApiOperation({

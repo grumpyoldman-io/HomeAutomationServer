@@ -56,9 +56,13 @@ export class HomeKitService {
 
     this.logger.log(`Creating HAP lights`);
 
-    Object.values(lightMap)
+    if (isLight(lightMap)) {
+      throw new Error('Lights not found');
+    }
+
+    lightMap
       .map((light) => this.createSimpleLight(light))
-      .map((light) => this.bridge.addBridgedAccessory(light));
+      .forEach((light) => this.bridge.addBridgedAccessory(light));
 
     this.bridge.publish({
       username: this.config.getOrThrow<string>('HOMEKIT_MAC_ADDRESS'),

@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 
 import { HueService } from '../Hue/Hue.service';
-import { Light } from '../types';
+import { Light, isLight } from '../types';
 
 @Injectable()
 export class LightsService {
@@ -13,22 +13,26 @@ export class LightsService {
     if (name === undefined) {
       this.logger.log('Getting status for all');
 
-      const lights = await this.hue.getAllLights();
+      const lights = await this.hue.getLights();
 
       return lights;
     }
 
     this.logger.log(`Getting status for ${name}`);
 
-    const light = await this.hue.getLight(name);
+    const light = await this.hue.getLights(name);
 
     return light;
   }
 
-  async toggleAll(): ReturnType<HueService['getAllLights']> {
+  async toggleAll(): ReturnType<HueService['getLights']> {
     this.logger.log(`Toggling all lights on/off`);
 
-    const lights = await this.hue.getAllLights();
+    const lights = await this.hue.getLights();
+
+    if (isLight(lights)) {
+      throw new Error('Lights not found');
+    }
 
     const lightsThatAreOn = lights.filter((light) => light.on);
     const lightsThatAreOff = lights.filter((light) => !light.on);
@@ -48,6 +52,12 @@ export class LightsService {
     );
 
     return lights.map((light) => ({ ...light, on: true }));
+  }
+
+  async store(): Promise<void> {
+    this.logger.log(`Storing status`);
+
+    await this.hue.storeState();
   }
 
   async set(name: string, on: boolean): ReturnType<HueService['setLight']> {
