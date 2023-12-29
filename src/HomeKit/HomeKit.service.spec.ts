@@ -44,7 +44,7 @@ describe('HomeKitService', () => {
     () =>
       ({
         getCharacteristic: jest.fn(() => mockCharacteristic),
-      } as unknown as Lightbulb),
+      }) as unknown as Lightbulb,
   );
 
   const mockSetCharacteristic = jest.fn();
@@ -92,7 +92,7 @@ describe('HomeKitService', () => {
       const mockConfig = (config: Record<string, string>) =>
         ({
           getOrThrow: (str: keyof typeof config) => config[str],
-        } as unknown as ConfigService);
+        }) as unknown as ConfigService;
 
       expect(
         () =>

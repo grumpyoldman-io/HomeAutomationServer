@@ -26,6 +26,20 @@ export class LightsController {
     return await this.service.status();
   }
 
+  @Get('toggle')
+  @Header('Cache-Control', 'none')
+  @ApiOperation({
+    summary: 'Toggle all lights on/off',
+  })
+  @ApiResponse({ status: 200, description: 'Toggled all lights' })
+  async lightsToggle(): ReturnType<LightsService['toggleAll']> {
+    try {
+      return await this.service.toggleAll();
+    } catch (error) {
+      throw this.handleError(error);
+    }
+  }
+
   @Get(':name')
   @Header('Cache-Control', 'none')
   @ApiOperation({
