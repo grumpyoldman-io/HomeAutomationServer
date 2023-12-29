@@ -10,7 +10,7 @@ import {
 } from 'hap-nodejs';
 
 import { LightsService } from '../Lights/Lights.service';
-import { Light } from '../types';
+import { Light, isLight } from '../types';
 
 @Injectable()
 export class HomeKitService {
@@ -18,7 +18,10 @@ export class HomeKitService {
   private readonly bridge: Bridge;
   private readonly logger = new Logger(HomeKitService.name);
 
-  constructor(private config: ConfigService, private lights: LightsService) {
+  constructor(
+    private config: ConfigService,
+    private lights: LightsService,
+  ) {
     if (
       this.config.getOrThrow<string>('HOMEKIT_MAC_ADDRESS') ===
       '00:00:00:00:00:00'
@@ -80,9 +83,13 @@ export class HomeKitService {
     const characteristic = lightBulb.getCharacteristic(Characteristic.On);
 
     characteristic.onGet(async () => {
-      const lightMap = await this.lights.status(light.name);
+      const lightState = await this.lights.status(light.name);
 
-      return lightMap[light.name.toLowerCase()].on;
+      if (!isLight(lightState)) {
+        throw new Error('Light not found');
+      }
+
+      return lightState.on;
     });
 
     characteristic.onSet(async (value) => {

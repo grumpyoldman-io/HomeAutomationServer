@@ -24,17 +24,20 @@ describe('LightsController', () => {
 
   describe('/lights', () => {
     it('should return the status of all lights', () => {
-      expect(lightsController.status()).resolves.toEqual({
-        [mockLights[0].name]: mockLights[0],
-        [mockLights[1].name]: mockLights[1],
+      expect(lightsController.status()).resolves.toEqual(mockLights);
+    });
+
+    describe('/toggle', () => {
+      it('should toggle all light on/off', () => {
+        expect(lightsController.lightsToggle()).resolves.toEqual(mockLights);
       });
     });
 
     describe('/:name', () => {
       it('should return the status of a single light', () => {
-        expect(lightsController.light(mockLights[0].name)).resolves.toEqual({
-          [mockLights[0].name]: mockLights[0],
-        });
+        expect(lightsController.light(mockLights[0].name)).resolves.toEqual(
+          mockLights[0],
+        );
 
         // Light not found
         expect(lightsController.light('NonExistentLight')).rejects.toEqual(

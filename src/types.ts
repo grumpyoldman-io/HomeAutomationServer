@@ -4,4 +4,12 @@ export interface Light extends Pick<model.Light, 'id' | 'name'> {
   on: boolean;
 }
 
-export type LightMap = Record<Light['name'], Light>;
+export const isLight = (light: unknown): light is Light => {
+  return (
+    typeof light === 'object' &&
+    light !== null &&
+    'id' in light &&
+    'name' in light &&
+    'on' in light
+  );
+};

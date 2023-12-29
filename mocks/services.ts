@@ -48,10 +48,7 @@ export const MockHomeKitService = {
 export const MockLightsService: MockService<LightsService> = {
   status: jest.fn(async (name?: string) => {
     if (name === undefined) {
-      return mockLights.reduce(
-        (state, light) => ({ ...state, [light.name.toLowerCase()]: light }),
-        {},
-      );
+      return mockLights;
     }
 
     const light = mockLights.find((light) => light.name === name);
@@ -60,9 +57,10 @@ export const MockLightsService: MockService<LightsService> = {
       throw new NotFoundError('Light not found');
     }
 
-    return {
-      [light?.name]: light,
-    };
+    return light;
+  }),
+  toggleAll: jest.fn(async () => {
+    return mockLights;
   }),
   set: jest.fn(async (name: string, on: boolean) => {
     const light = mockLights.find((light) => light.name === name);

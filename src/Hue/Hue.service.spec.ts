@@ -72,7 +72,7 @@ describe('HueService', () => {
       const mockConfig = (config: Record<string, string>) =>
         ({
           getOrThrow: (str: keyof typeof config) => config[str],
-        } as unknown as ConfigService);
+        }) as unknown as ConfigService;
 
       expect(() => new HueService(mockConfig({ HUE_HOST: '' }))).toThrowError(
         'Incorrect bridge host / user',

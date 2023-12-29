@@ -6,6 +6,7 @@ import { MockHueService } from '@mocks/services';
 import { NotFoundError } from '../Errors';
 import { HueModule } from '../Hue/Hue.module';
 import { HueService } from '../Hue/Hue.service';
+import { isLight } from '../types';
 
 import { LightsService } from './Lights.service';
 
@@ -27,16 +28,12 @@ describe('LightsService', () => {
   it('should be able to fetch the status for all lights', async () => {
     const status = await service.status();
 
-    mockLights.forEach((mockLight) => {
-      expect(status).toHaveProperty(mockLight.name);
-      expect(status[mockLight.name]).toMatchObject(mockLight);
-    });
+    expect(status).toMatchObject(mockLights);
   });
 
   it('should be able to fetch the status for a single light', async () => {
     const status = await service.status(mockLights[1].name);
-    expect(status).toHaveProperty(mockLights[1].name);
-    expect(status[mockLights[1].name]).toMatchObject(mockLights[1]);
+    expect(status).toMatchObject(mockLights[1]);
 
     // Light not found
     expect(service.status('NonExistentLight')).rejects.toEqual(
@@ -44,18 +41,36 @@ describe('LightsService', () => {
     );
   });
 
+  it('should be able to toggle the status for all lights', async () => {
+    const status = await service.status();
+
+    if (isLight(status)) {
+      throw new Error('Expected status to be an object');
+    }
+
+    expect(status[0]).toHaveProperty('on', false);
+    expect(status[1]).toHaveProperty('on', false);
+
+    await service.toggleAll();
+
+    expect(status[0]).toHaveProperty('on', true);
+    expect(status[1]).toHaveProperty('on', true);
+
+    await service.toggleAll();
+  });
+
   it('should be able to set the status for a single light', async () => {
     const status = await service.status(mockLights[1].name);
 
-    expect(status[mockLights[1].name]).toHaveProperty('on', false);
+    expect(status).toHaveProperty('on', false);
 
     const response = await service.set(mockLights[1].name, true);
 
     expect(response).toBe(true);
-    expect(status[mockLights[1].name]).toHaveProperty('on', true);
+    expect(status).toHaveProperty('on', true);
 
     await service.set(mockLights[1].name, false);
-    expect(status[mockLights[1].name]).toHaveProperty('on', false);
+    expect(status).toHaveProperty('on', false);
 
     // Light not found
     expect(service.toggle('NonExistentLight')).rejects.toEqual(
@@ -66,15 +81,15 @@ describe('LightsService', () => {
   it('should be able to toggle the status for a single light', async () => {
     const status = await service.status(mockLights[1].name);
 
-    expect(status[mockLights[1].name]).toHaveProperty('on', false);
+    expect(status).toHaveProperty('on', false);
 
     const response = await service.toggle(mockLights[1].name);
 
     expect(response).toBe(true);
-    expect(status[mockLights[1].name]).toHaveProperty('on', true);
+    expect(status).toHaveProperty('on', true);
 
     await service.toggle(mockLights[1].name);
-    expect(status[mockLights[1].name]).toHaveProperty('on', false);
+    expect(status).toHaveProperty('on', false);
 
     // Light not found
     expect(service.toggle('NonExistentLight')).rejects.toEqual(

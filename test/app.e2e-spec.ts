@@ -41,19 +41,21 @@ describe('Home Automation Server (e2e)', () => {
     return request(app.getHttpServer())
       .get('/lights')
       .expect(200)
-      .expect(
-        mockLights.reduce(
-          (state, light) => ({ ...state, [light.name.toLowerCase()]: light }),
-          {},
-        ),
-      );
+      .expect(mockLights);
+  });
+
+  it('/lights/toggle (GET)', () => {
+    return request(app.getHttpServer())
+      .get('/lights/toggle')
+      .expect(200)
+      .expect(mockLights);
   });
 
   it(`/lights/${mockLights[0].name} (GET)`, () => {
     return request(app.getHttpServer())
       .get(`/lights/${mockLights[0].name}`)
       .expect(200)
-      .expect({ [mockLights[0].name]: mockLights[0] });
+      .expect(mockLights[0]);
   });
 
   it('/lights/non-existing-light (GET)', () => {
@@ -67,7 +69,7 @@ describe('Home Automation Server (e2e)', () => {
     return request(app.getHttpServer())
       .get(`/lights/${mockLights[0].name}/toggle`)
       .expect(200)
-      .expect('true');
+      .expect(mockLights[0].on ? 'false' : 'true');
   });
 
   it('/lights/non-existing-light/toggle (GET)', () => {

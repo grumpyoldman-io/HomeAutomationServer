@@ -20,7 +20,10 @@ import { LightsModule } from './Lights/Lights.module';
 export class AppModule {
   static port: string;
 
-  constructor(configService: ConfigService, private readonly logger: Logger) {
+  constructor(
+    configService: ConfigService,
+    private readonly logger: Logger,
+  ) {
     AppModule.port = configService.getOrThrow<string>('PORT');
   }
 
