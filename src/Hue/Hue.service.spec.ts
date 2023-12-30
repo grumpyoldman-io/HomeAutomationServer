@@ -83,14 +83,6 @@ describe('HueService', () => {
       );
     });
 
-    it('should create the default light state', () => {
-      expect(MockLightState.bri).toHaveBeenNthCalledWith(1, 254);
-      expect(MockLightState.hue).toHaveBeenNthCalledWith(1, 14948);
-      expect(MockLightState.sat).toHaveBeenNthCalledWith(1, 143);
-      expect(MockLightState.ct).toHaveBeenNthCalledWith(1, 365);
-      expect(MockLightState.effect).toHaveBeenNthCalledWith(1, 'none');
-    });
-
     it('should connect to bridge', () => {
       service.onModuleInit();
 
@@ -115,7 +107,7 @@ describe('HueService', () => {
 
   describe('getAllLights', () => {
     it('should return a formatted overview of all lights', () => {
-      expect(service.getAllLights()).resolves.toEqual(
+      expect(service.getLights()).resolves.toEqual(
         mockLights.map((light) => ({ ...light, on: true })),
       );
     });
@@ -123,13 +115,13 @@ describe('HueService', () => {
 
   describe('getLight', () => {
     it('should return a formatted single lights', () => {
-      expect(service.getLight(mockLights[0].name)).resolves.toEqual({
+      expect(service.getLights(mockLights[0].name)).resolves.toEqual({
         ...mockLights[0],
         on: true,
       });
 
       // Light not found
-      expect(service.getLight('NonExistentLight')).rejects.toEqual(
+      expect(service.getLights('NonExistentLight')).rejects.toEqual(
         new NotFoundError('Light not found'),
       );
     });
@@ -139,11 +131,14 @@ describe('HueService', () => {
     it('should return a formatted single lights', async () => {
       await service.setLight(mockLights[0].name, false);
 
-      expect(MockApi.lights.setLightState).toHaveBeenNthCalledWith(
-        1,
-        '1',
-        'off',
-      );
+      expect(MockApi.lights.setLightState).toHaveBeenNthCalledWith(1, '1', {
+        bri: 254,
+        ct: 365,
+        effect: 'none',
+        hue: 15022,
+        on: false,
+        sat: 139,
+      });
 
       // Light not found
       expect(service.setLight('NonExistentLight', true)).rejects.toEqual(
@@ -156,16 +151,56 @@ describe('HueService', () => {
     it('should return a formatted single lights', async () => {
       await service.toggleLight(mockLights[0].name);
 
-      expect(MockApi.lights.setLightState).toHaveBeenNthCalledWith(
-        1,
-        '1',
-        'off',
-      );
+      expect(MockApi.lights.setLightState).toHaveBeenNthCalledWith(1, '1', {
+        bri: 254,
+        ct: 365,
+        effect: 'none',
+        hue: 15022,
+        on: false,
+        sat: 139,
+      });
 
       // Light not found
       expect(service.toggleLight('NonExistentLight')).rejects.toEqual(
         new NotFoundError('Light not found'),
       );
+    });
+  });
+
+  describe('storeState', () => {
+    it('should store the light states', async () => {
+      expect(service.storedState).toEqual({});
+
+      await service.storeState([
+        {
+          id: '1-color-on',
+          type: 'Extended color light',
+          state: {
+            bri: 1,
+            sat: 2,
+            xor: true,
+            hue: 6,
+            effect: 'lala',
+            ct: 5,
+            on: true,
+          },
+        },
+        {
+          id: '2-color-off',
+          type: 'Extended color light',
+          state: { bri: 1, sat: 2, xor: true, on: false },
+        },
+        {
+          id: '3-dimmable-on',
+          type: 'Dimmable light',
+          state: { bri: 1, sat: 2, on: true },
+        },
+      ] as unknown as model.Light[]);
+
+      expect(service.storedState).toEqual({
+        '1-color-on': { bri: 1, sat: 2, hue: 6, effect: 'lala', ct: 5 },
+        '3-dimmable-on': { bri: 1 },
+      });
     });
   });
 });

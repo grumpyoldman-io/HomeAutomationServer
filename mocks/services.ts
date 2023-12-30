@@ -6,9 +6,14 @@ import { LightsService } from '../src/Lights/Lights.service';
 
 import { mockLights } from './lights';
 
+let mockStoredState = {};
+
 export const MockHueService: MockService<HueService> = {
-  getAllLights: () => mockLights,
-  getLight: (name: string) => {
+  getLights: (name?: string) => {
+    if (name === undefined) {
+      return mockLights;
+    }
+
     const light = mockLights.find((light) => light.name === name);
 
     if (light === undefined) {
@@ -39,6 +44,10 @@ export const MockHueService: MockService<HueService> = {
 
     return light.on;
   },
+  storeState: jest.fn(async () => {
+    mockStoredState = mockLights;
+  }),
+  storedState: () => mockStoredState,
 };
 
 export const MockHomeKitService = {
@@ -62,6 +71,7 @@ export const MockLightsService: MockService<LightsService> = {
   toggleAll: jest.fn(async () => {
     return mockLights;
   }),
+  store: jest.fn(),
   set: jest.fn(async (name: string, on: boolean) => {
     const light = mockLights.find((light) => light.name === name);
 
