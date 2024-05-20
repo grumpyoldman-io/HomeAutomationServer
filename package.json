@@ -33,7 +33,7 @@
     "hap-nodejs": "0.12.0",
     "node-hue-api": "5.0.0-beta.16",
     "reflect-metadata": "0.1.14",
-    "rimraf": "5.0.1",
+    "rimraf": "5.0.7",
     "rxjs": "7.8.1"
   },
   "devDependencies": {
