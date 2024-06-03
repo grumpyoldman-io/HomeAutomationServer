@@ -2281,10 +2281,10 @@ debug@^3.2.7:
   dependencies:
     ms "^2.1.1"
 
-debug@^4.1.0, debug@^4.1.1, debug@^4.3.1, debug@^4.3.2, debug@^4.3.4, debug@~4.3.4:
-  version "4.3.4"
-  resolved "https://registry.yarnpkg.com/debug/-/debug-4.3.4.tgz#1319f6579357f2338d3337d2cdd4914bb5dcc865"
-  integrity sha512-PRWFHuSU3eDtQJPvnNY7Jcket1j0t5OuOsFzPPzsekD52Zl8qUfFIPEiswXqIvHWGVHOgX+7G/vCNNhehwxfkQ==
+debug@^4.1.0, debug@^4.1.1, debug@^4.3.1, debug@^4.3.2, debug@^4.3.4, debug@^4.3.5, debug@~4.3.4:
+  version "4.3.5"
+  resolved "https://registry.yarnpkg.com/debug/-/debug-4.3.5.tgz#e83444eceb9fedd4a1da56d671ae2446a01a6e1e"
+  integrity sha512-pt0bNEmneDIvdL1Xsd9oDQ/wrQRkXDT4AUWlNZNPKvW5x/jyO9VFXkJUP07vQ2upmw5PlaITaPKc31jK13V+jg==
   dependencies:
     ms "2.1.2"
 
@@ -3372,18 +3372,18 @@ graphemer@^1.4.0:
   resolved "https://registry.yarnpkg.com/graphemer/-/graphemer-1.4.0.tgz#fb2f1d55e0e3a1849aeffc90c4fa0dd53a0e66c6"
   integrity sha512-EtKwoO6kxCL9WO5xipiHTZlSzBm7WLT627TqC/uVRd0HKmq8NXyebnNYxDoBi7wt8eTWrUrKXCOVaFq9x1kgag==
 
-hap-nodejs@0.12.1:
-  version "0.12.1"
-  resolved "https://registry.yarnpkg.com/hap-nodejs/-/hap-nodejs-0.12.1.tgz#5209ee22a0563cfbd1b376c18f226eb20d35bc85"
-  integrity sha512-iUUMaK6ucDKLMjT4m5Oz6CoLKkGg+omI6GR96weyL8fPGR1HYoCMtoJoUNW2NSIp4b2A6hx4zjNOEtLEaTA2MQ==
+hap-nodejs@0.12.2:
+  version "0.12.2"
+  resolved "https://registry.yarnpkg.com/hap-nodejs/-/hap-nodejs-0.12.2.tgz#dd0a18cc6421bc871aefc4a05e4f702dd045c2f7"
+  integrity sha512-EAgcBOxxMaWKkRfuGc8FBVJO5/OCFM2jMt5+szkqazWLKANkRLrvf/GtQnPsl6GUuLiWYddLZ/zwasayU8ljQQ==
   dependencies:
     "@homebridge/ciao" "^1.2.0"
     "@homebridge/dbus-native" "^0.6.0"
     bonjour-hap "^3.7.2"
-    debug "^4.3.4"
+    debug "^4.3.5"
     fast-srp-hap "^2.0.4"
     futoin-hkdf "^1.5.3"
-    node-persist "^0.0.11"
+    node-persist "^0.0.12"
     source-map-support "^0.5.21"
     tslib "^2.6.2"
     tweetnacl "^1.0.3"
@@ -4775,10 +4775,10 @@ node-int64@^0.4.0:
   resolved "https://registry.yarnpkg.com/node-int64/-/node-int64-0.4.0.tgz#87a9065cdb355d3182d8f94ce11188b825c68a3b"
   integrity sha512-O5lz91xSOeoXP6DulyHfllpq+Eg00MWitZIbtPfoSEvqIHdl5gfcY6hYzDWnj0qD5tz52PI08u9qUvSVeUBeHw==
 
-node-persist@^0.0.11:
-  version "0.0.11"
-  resolved "https://registry.yarnpkg.com/node-persist/-/node-persist-0.0.11.tgz#d66eba3ebef620f079530fa7b13076a906665874"
-  integrity sha512-J3EPzQDgPxPBID7TqHSd5KkpTULFqJUvYDoISfOWg9EihpeVCH3b6YQeDeubzVuc4e6+aiVmkz2sdkWI4K+ghA==
+node-persist@^0.0.12:
+  version "0.0.12"
+  resolved "https://registry.yarnpkg.com/node-persist/-/node-persist-0.0.12.tgz#1535d1a288b956357e328223dc83d6692de99ba1"
+  integrity sha512-Fbia3FYnURzaql53wLu0t19dmAwQg/tXT6O7YPmdwNwysNKEyFmgoT2BQlPD3XXQnYeiQVNvR5lfvufGwKuxhg==
   dependencies:
     mkdirp "~0.5.1"
     q "~1.1.1"
