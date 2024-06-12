@@ -54,16 +54,16 @@ describe('LightsController', () => {
       describe('/set', () => {
         it('should set a single light on/off', () => {
           expect(
-            lightsController.lightSet(mockLights[0].name, 'on'),
+            lightsController.lightSetOnOff(mockLights[0].name, 'on'),
           ).resolves.toEqual(true);
 
           expect(
-            lightsController.lightSet(mockLights[0].name, 'off'),
+            lightsController.lightSetOnOff(mockLights[0].name, 'off'),
           ).resolves.toEqual(false);
 
           // Light not found
           expect(
-            lightsController.lightSet('NonExistentLight', 'off'),
+            lightsController.lightSetOnOff('NonExistentLight', 'off'),
           ).rejects.toEqual(
             new HttpException(
               {
@@ -85,6 +85,27 @@ describe('LightsController', () => {
           // Light not found
           expect(
             lightsController.lightToggle('NonExistentLight'),
+          ).rejects.toEqual(
+            new HttpException(
+              {
+                status: HttpStatus.NOT_FOUND,
+                error: 'Light not found',
+              },
+              HttpStatus.NOT_FOUND,
+            ),
+          );
+        });
+      });
+
+      describe('/setBrightness', () => {
+        it('should set a single light brightness', () => {
+          expect(
+            lightsController.lightSetBrightness(mockLights[0].name, 42),
+          ).resolves.toEqual(42);
+
+          // Light not found
+          expect(
+            lightsController.lightSetBrightness('NonExistentLight', 42),
           ).rejects.toEqual(
             new HttpException(
               {

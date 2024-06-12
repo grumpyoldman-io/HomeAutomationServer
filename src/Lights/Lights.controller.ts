@@ -22,8 +22,8 @@ export class LightsController {
   @ApiOperation({
     summary: 'Get status for all lights',
   })
-  async status(): ReturnType<LightsService['status']> {
-    return await this.service.status();
+  async status(): ReturnType<LightsService['statusAll']> {
+    return await this.service.statusAll();
   }
 
   @Get('toggle')
@@ -94,12 +94,35 @@ export class LightsController {
   @ApiParam({ name: 'val', required: true, enum: ['on', 'off'] })
   @ApiResponse({ status: 200, description: 'Set single light' })
   @ApiResponse({ status: 404, description: 'Light not found' })
-  async lightSet(
+  async lightSetOnOff(
     @Param('name') name: string,
     @Param('val') val: string,
-  ): ReturnType<LightsService['set']> {
+  ): ReturnType<LightsService['setOnOff']> {
     try {
-      return await this.service.set(name, val === 'on');
+      return await this.service.setOnOff(name, val === 'on');
+    } catch (error) {
+      throw this.handleError(error);
+    }
+  }
+
+  @Get(':name/set/brightness/:val')
+  @Header('Cache-Control', 'none')
+  @ApiOperation({
+    summary: 'Set a light on/off',
+  })
+  @ApiParam({ name: 'name', required: true })
+  @ApiParam({ name: 'val', required: true, type: 'number' })
+  @ApiResponse({ status: 200, description: 'Set single light' })
+  @ApiResponse({ status: 404, description: 'Light not found' })
+  async lightSetBrightness(
+    @Param('name') name: string,
+    @Param('val') val: number,
+  ): ReturnType<LightsService['setBrightness']> {
+    try {
+      return await this.service.setBrightness(
+        name,
+        Math.min(100, Math.max(1, val)),
+      );
     } catch (error) {
       throw this.handleError(error);
     }

@@ -10,7 +10,7 @@ import {
 } from 'hap-nodejs';
 
 import { LightsService } from '../Lights/Lights.service';
-import { Light, isLight } from '../types';
+import { Light } from '../types';
 
 @Injectable()
 export class HomeKitService {
@@ -52,13 +52,9 @@ export class HomeKitService {
   }
 
   async onModuleInit() {
-    const lightMap = await this.lights.status();
+    const lightMap = await this.lights.statusAll();
 
     this.logger.log(`Creating HAP lights`);
-
-    if (isLight(lightMap)) {
-      throw new Error('Lights not found');
-    }
 
     lightMap
       .map((light) => this.createSimpleLight(light))
@@ -84,20 +80,37 @@ export class HomeKitService {
     );
     const lightBulb = new Service.Lightbulb(light.name);
 
-    const characteristic = lightBulb.getCharacteristic(Characteristic.On);
+    // On/Off
+    const onOffCharacteristic = lightBulb.getCharacteristic(Characteristic.On);
 
-    characteristic.onGet(async () => {
+    onOffCharacteristic.onGet(async () => {
       const lightState = await this.lights.status(light.name);
-
-      if (!isLight(lightState)) {
-        throw new Error('Light not found');
-      }
 
       return lightState.on;
     });
 
-    characteristic.onSet(async (value) => {
-      await this.lights.set(light.name, value as boolean);
+    onOffCharacteristic.onSet(async (value) => {
+      await this.lights.setOnOff(light.name, value as boolean);
+    });
+
+    // Brightness (1-100)
+    const brightnessCharacteristic = lightBulb.getCharacteristic(
+      Characteristic.Brightness,
+    );
+
+    brightnessCharacteristic.setProps({
+      minValue: 1,
+      maxValue: 100,
+    });
+
+    brightnessCharacteristic.onGet(async () => {
+      const lightState = await this.lights.status(light.name);
+
+      return lightState.brightness;
+    });
+
+    brightnessCharacteristic.onSet(async (value) => {
+      await this.lights.setBrightness(light.name, value as number);
     });
 
     accessory.addService(lightBulb);

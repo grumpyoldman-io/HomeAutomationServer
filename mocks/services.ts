@@ -9,11 +9,8 @@ import { mockLights } from './lights';
 let mockStoredState = {};
 
 export const MockHueService: MockService<HueService> = {
-  getLights: (name?: string) => {
-    if (name === undefined) {
-      return mockLights;
-    }
-
+  getLights: () => mockLights,
+  getLight: (name: string) => {
     const light = mockLights.find((light) => light.name === name);
 
     if (light === undefined) {
@@ -22,7 +19,7 @@ export const MockHueService: MockService<HueService> = {
 
     return light;
   },
-  setLight: (name: string, on: boolean) => {
+  setLightOnOff: (name: string, on: boolean) => {
     const light = mockLights.find((light) => light.name === name);
 
     if (light === undefined) {
@@ -32,6 +29,17 @@ export const MockHueService: MockService<HueService> = {
     light.on = on;
 
     return light.on;
+  },
+  setLightBrightness: (name: string, value: number) => {
+    const light = mockLights.find((light) => light.name === name);
+
+    if (light === undefined) {
+      throw new NotFoundError('Light not found');
+    }
+
+    light.brightness = value;
+
+    return light.brightness;
   },
   toggleLight: (name: string) => {
     const light = mockLights.find((light) => light.name === name);
@@ -55,11 +63,7 @@ export const MockHomeKitService = {
 } as unknown as MockService<HomeKitService>;
 
 export const MockLightsService: MockService<LightsService> = {
-  status: jest.fn(async (name?: string) => {
-    if (name === undefined) {
-      return mockLights;
-    }
-
+  status: jest.fn(async (name: string) => {
     const light = mockLights.find((light) => light.name === name);
 
     if (light === undefined) {
@@ -68,11 +72,12 @@ export const MockLightsService: MockService<LightsService> = {
 
     return light;
   }),
+  statusAll: jest.fn(async () => mockLights),
   toggleAll: jest.fn(async () => {
     return mockLights;
   }),
   store: jest.fn(),
-  set: jest.fn(async (name: string, on: boolean) => {
+  setOnOff: jest.fn(async (name: string, on: boolean) => {
     const light = mockLights.find((light) => light.name === name);
 
     if (light === undefined) {
@@ -80,6 +85,15 @@ export const MockLightsService: MockService<LightsService> = {
     }
 
     return on;
+  }),
+  setBrightness: jest.fn(async (name: string, value: number) => {
+    const light = mockLights.find((light) => light.name === name);
+
+    if (light === undefined) {
+      throw new NotFoundError('Light not found');
+    }
+
+    return value;
   }),
   toggle: jest.fn(async (name: string) => {
     const light = mockLights.find((light) => light.name === name);

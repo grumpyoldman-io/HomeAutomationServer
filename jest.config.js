@@ -17,6 +17,6 @@ module.exports = {
       statements: 90,
     },
   },
-  coverageDirectory: '../coverage',
+  coverageDirectory: './coverage',
   testEnvironment: 'node',
 };

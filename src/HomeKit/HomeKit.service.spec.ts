@@ -40,12 +40,11 @@ describe('HomeKitService', () => {
   const characteristicGetSpy = jest.spyOn(mockCharacteristic, 'onGet');
   const characteristicSetSpy = jest.spyOn(mockCharacteristic, 'onSet');
 
-  const mockLightbulb = jest.fn(
-    () =>
-      ({
-        getCharacteristic: jest.fn(() => mockCharacteristic),
-      }) as unknown as Lightbulb,
-  );
+  const mockLightbulb = {
+    getCharacteristic: jest.fn(() => mockCharacteristic),
+  } as unknown as Lightbulb;
+
+  const mockLightbulbCreator = jest.fn(() => mockLightbulb);
 
   const mockSetCharacteristic = jest.fn();
 
@@ -61,7 +60,7 @@ describe('HomeKitService', () => {
   beforeAll(() => {
     mockedAccessory.mockReturnValue(mockAccessory);
     mockedBridge.mockReturnValue(mockBridge);
-    mockedService.Lightbulb.mockImplementation(mockLightbulb);
+    mockedService.Lightbulb.mockImplementation(mockLightbulbCreator);
     mockedService.AccessoryInformation.mockReturnValue({
       setCharacteristic: mockSetCharacteristic,
     } as unknown as AccessoryInformation);
@@ -148,9 +147,9 @@ describe('HomeKitService', () => {
       await waitForExpect(() => expect(mockBridge.publish).toHaveBeenCalled());
 
       // Check creation of light bulbs
-      expect(mockLightbulb).toHaveBeenCalledTimes(mockLights.length);
+      expect(mockLightbulbCreator).toHaveBeenCalledTimes(mockLights.length);
       mockLights.map((light) =>
-        expect(mockLightbulb).toHaveBeenCalledWith(light.name),
+        expect(mockLightbulbCreator).toHaveBeenCalledWith(light.name),
       );
 
       // Check if light bulbs have been attached
@@ -177,11 +176,18 @@ describe('HomeKitService', () => {
       // Make sure all code has executed
       await waitForExpect(() => expect(mockBridge.publish).toHaveBeenCalled());
 
-      expect(characteristicGetSpy).toHaveBeenCalledTimes(mockLights.length);
-      expect(characteristicSetSpy).toHaveBeenCalledTimes(mockLights.length);
+      // 2 characteristics per light
+      expect(characteristicGetSpy).toHaveBeenCalledTimes(mockLights.length * 2);
+      expect(characteristicSetSpy).toHaveBeenCalledTimes(mockLights.length * 2);
+      expect(mockLightbulb.getCharacteristic).toHaveBeenCalledWith(
+        Characteristic.On,
+      );
+      expect(mockLightbulb.getCharacteristic).toHaveBeenCalledWith(
+        Characteristic.Brightness,
+      );
     });
 
-    it('should handle the "get" event', async () => {
+    it('should handle the "getOnOff" event', async () => {
       service.onModuleInit();
 
       // Make sure all code has executed
@@ -189,12 +195,12 @@ describe('HomeKitService', () => {
 
       const result = await characteristicGetSpy.mock.calls[0][0]({});
 
-      expect(MockLightsService.status).toBeCalledWith(mockLights[0].name);
+      expect(MockLightsService.status).toHaveBeenCalledWith(mockLights[0].name);
 
       expect(result).toBe(mockLights[0].on);
     });
 
-    it('should handle the "set" event', async () => {
+    it('should handle the "setOnOff" event', async () => {
       service.onModuleInit();
 
       // Make sure all code has executed
@@ -205,9 +211,38 @@ describe('HomeKitService', () => {
         {},
       );
 
-      expect(MockLightsService.set).toBeCalledWith(
+      expect(MockLightsService.setOnOff).toHaveBeenCalledWith(
         mockLights[0].name,
         'mock-state',
+      );
+
+      expect(result).toBeUndefined();
+    });
+
+    it('should handle the "getBrightness" event', async () => {
+      service.onModuleInit();
+
+      // Make sure all code has executed
+      await waitForExpect(() => expect(mockBridge.publish).toHaveBeenCalled());
+
+      const result = await characteristicGetSpy.mock.calls[1][0]({});
+
+      expect(MockLightsService.status).toHaveBeenCalledWith(mockLights[0].name);
+
+      expect(result).toBe(mockLights[0].brightness);
+    });
+
+    it('should handle the "setBrightness" event', async () => {
+      service.onModuleInit();
+
+      // Make sure all code has executed
+      await waitForExpect(() => expect(mockBridge.publish).toHaveBeenCalled());
+
+      const result = await characteristicSetSpy.mock.calls[1][0](42, {});
+
+      expect(MockLightsService.setBrightness).toHaveBeenCalledWith(
+        mockLights[0].name,
+        42,
       );
 
       expect(result).toBeUndefined();

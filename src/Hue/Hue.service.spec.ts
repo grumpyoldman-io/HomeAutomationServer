@@ -105,31 +105,31 @@ describe('HueService', () => {
     });
   });
 
-  describe('getAllLights', () => {
+  describe('getLights', () => {
     it('should return a formatted overview of all lights', () => {
       expect(service.getLights()).resolves.toEqual(
-        mockLights.map((light) => ({ ...light, on: true })),
+        mockLights.map((light) => ({ ...light, brightness: 100, on: true })),
       );
     });
   });
 
   describe('getLight', () => {
     it('should return a formatted single lights', () => {
-      expect(service.getLights(mockLights[0].name)).resolves.toEqual({
+      expect(service.getLight(mockLights[0].name)).resolves.toEqual({
         ...mockLights[0],
         on: true,
       });
 
       // Light not found
-      expect(service.getLights('NonExistentLight')).rejects.toEqual(
+      expect(service.getLight('NonExistentLight')).rejects.toEqual(
         new NotFoundError('Light not found'),
       );
     });
   });
 
-  describe('setLight', () => {
+  describe('setLightOnOff', () => {
     it('should return a formatted single lights', async () => {
-      await service.setLight(mockLights[0].name, false);
+      await service.setLightOnOff(mockLights[0].name, false);
 
       expect(MockApi.lights.setLightState).toHaveBeenNthCalledWith(1, '1', {
         bri: 254,
@@ -141,14 +141,48 @@ describe('HueService', () => {
       });
 
       // Light not found
-      expect(service.setLight('NonExistentLight', true)).rejects.toEqual(
+      expect(service.setLightOnOff('NonExistentLight', true)).rejects.toEqual(
         new NotFoundError('Light not found'),
       );
     });
   });
 
+  describe('setLightBrightness', () => {
+    it('should return a formatted single light', async () => {
+      await service.setLightBrightness(mockLights[0].name, 50);
+
+      expect(MockApi.lights.setLightState).toHaveBeenCalledWith('1', {
+        bri: 126,
+        ct: 365,
+        effect: 'none',
+        hue: 15022,
+        on: true,
+        sat: 139,
+      });
+
+      // Light not found
+      expect(
+        service.setLightBrightness('NonExistentLight', 50),
+      ).rejects.toEqual(new NotFoundError('Light not found'));
+    });
+
+    it('should turn the light on if it was off', async () => {
+      MockApi.lights.getAll.mockReturnValue(
+        mockHueLights.map((light) => ({ ...light, state: { on: false } })),
+      );
+
+      const onOffSpy = jest.spyOn(service, 'setLightOnOff');
+
+      await service.setLightBrightness(mockLights[0].name, 50);
+
+      expect(onOffSpy).toHaveBeenCalledWith(mockLights[0].name, true);
+
+      MockApi.lights.getAll.mockReturnValue(mockHueLights);
+    });
+  });
+
   describe('toggleLight', () => {
-    it('should return a formatted single lights', async () => {
+    it('should return a formatted single light', async () => {
       await service.toggleLight(mockLights[0].name);
 
       expect(MockApi.lights.setLightState).toHaveBeenNthCalledWith(1, '1', {

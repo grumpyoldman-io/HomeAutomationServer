@@ -1,10 +1,14 @@
+import { writeFile, readFile } from 'node:fs/promises';
+import { resolve } from 'node:path';
+import { cwd } from 'node:process';
+
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { model, v3 } from 'node-hue-api';
 import type { Api } from 'node-hue-api/dist/esm/api/Api';
 
 import { NotFoundError } from '../Errors';
-import { Light, isLight } from '../types';
+import { Light } from '../types';
 
 type LightType = 'Extended color light' | 'Dimmable light';
 type LightLike = model.Light | model.Luminaire | model.Lightsource;
@@ -16,6 +20,8 @@ interface InternalState {
   ct?: number;
 }
 
+const STORE_FILE_PATH = resolve(cwd(), 'persist/stored-hue-state.json');
+
 @Injectable()
 export class HueService {
   private isConnecting = false;
@@ -26,13 +32,13 @@ export class HueService {
 
   private readonly logger = new Logger(HueService.name);
   private readonly bridgeConfig: { host: string; user: string };
-  private readonly defaultState: InternalState = {
+  private readonly defaultState = {
     bri: 254,
     hue: 15022,
     sat: 139,
     effect: 'none',
     ct: 365,
-  };
+  } satisfies InternalState;
 
   constructor(private config: ConfigService) {
     const bridgeHost = config.getOrThrow<string>('HUE_HOST');
@@ -50,9 +56,10 @@ export class HueService {
 
   async onModuleInit() {
     await this.connect();
+    await this.readStoredStateFromFile();
   }
 
-  async getLights(name?: Light['name']): Promise<Light | Light[]> {
+  async getLights(): Promise<Light[]> {
     await this.connect();
 
     const hueLights: LightLike[] = await this.api.lights.getAll();
@@ -64,12 +71,17 @@ export class HueService {
         id: hueLight.id.toString(),
         name: hueLight.name,
         on: state.on,
+        brightness: Math.round(
+          (((hueLight.state as InternalState).bri ?? 254 - 1) / 253) * 99 + 1,
+        ),
       };
     });
 
-    if (name === undefined) {
-      return lights;
-    }
+    return lights;
+  }
+
+  async getLight(name: Light['name']): Promise<Light> {
+    const lights = await this.getLights();
 
     const light = lights.find(
       (light) => light.name.toLocaleLowerCase() === name.toLocaleLowerCase(),
@@ -82,14 +94,10 @@ export class HueService {
     return light;
   }
 
-  async setLight(name: Light['name'], on: Light['on']): Promise<boolean> {
+  async setLightOnOff(name: Light['name'], on: Light['on']): Promise<boolean> {
     await this.connect();
 
-    const light = await this.getLights(name);
-
-    if (!isLight(light)) {
-      throw new NotFoundError('Light not found');
-    }
+    const light = await this.getLight(name);
 
     await this.api.lights.setLightState(light.id, {
       ...this.storeStateToInternalState(light.id),
@@ -99,16 +107,35 @@ export class HueService {
     return on;
   }
 
+  async setLightBrightness(
+    name: Light['name'],
+    value: Light['brightness'], // 1-100
+  ): Promise<Light['brightness']> {
+    await this.connect();
+
+    const light = await this.getLight(name);
+
+    const bri = Math.round(((value - 1) / 99) * 253 + 1);
+
+    if (bri > 0 && !light.on) {
+      light.on = await this.setLightOnOff(name, true);
+    }
+
+    await this.api.lights.setLightState(light.id, {
+      ...this.storeStateToInternalState(light.id),
+      on: light.on,
+      bri,
+    });
+
+    return value;
+  }
+
   async toggleLight(name: Light['name']): Promise<boolean> {
     await this.connect();
 
-    const light = await this.getLights(name);
+    const light = await this.getLight(name);
 
-    if (!isLight(light)) {
-      throw new NotFoundError('Light not found');
-    }
-
-    return await this.setLight(name, !light.on);
+    return await this.setLightOnOff(name, !light.on);
   }
 
   async storeState(defaultHueLights?: LightLike[]): Promise<void> {
@@ -126,6 +153,8 @@ export class HueService {
         }),
         this.storedState,
       );
+
+    await this.writeStoredStateToFile();
   }
 
   private async connect(): Promise<void> {
@@ -161,10 +190,6 @@ export class HueService {
 
     await this.connect();
     const lights = await this.getLights();
-
-    if (isLight(lights)) {
-      throw new NotFoundError('Lights not found');
-    }
 
     await Promise.all(
       lights
@@ -232,5 +257,29 @@ export class HueService {
     }
 
     return newState;
+  }
+
+  private async readStoredStateFromFile(): Promise<typeof this.storedState> {
+    try {
+      const file = await readFile(STORE_FILE_PATH, 'utf-8');
+
+      this.storedState = JSON.parse(file);
+
+      this.logger.log(
+        `Previous state found for the following lights: ${Object.keys(
+          this.storedState,
+        ).join(', ')}`,
+      );
+    } catch (error) {
+      this.logger.warn('Error reading stored state from file', error);
+
+      this.storedState = this.storedState ?? {};
+    }
+
+    return this.storedState;
+  }
+
+  private async writeStoredStateToFile(): Promise<void> {
+    await writeFile(STORE_FILE_PATH, JSON.stringify(this.storedState));
   }
 }

@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 
 import { HueService } from '../Hue/Hue.service';
-import { Light, isLight } from '../types';
+import { Light } from '../types';
 
 @Injectable()
 export class LightsService {
@@ -9,20 +9,20 @@ export class LightsService {
 
   constructor(private readonly hue: HueService) {}
 
-  async status(name?: string): Promise<Light | Light[]> {
-    if (name === undefined) {
-      this.logger.log('Getting status for all');
-
-      const lights = await this.hue.getLights();
-
-      return lights;
-    }
-
+  async status(name: string): Promise<Light> {
     this.logger.log(`Getting status for ${name}`);
 
-    const light = await this.hue.getLights(name);
+    const light = await this.hue.getLight(name);
 
     return light;
+  }
+
+  async statusAll(): Promise<Light[]> {
+    this.logger.log('Getting status for all');
+
+    const lights = await this.hue.getLights();
+
+    return lights;
   }
 
   async toggleAll(): ReturnType<HueService['getLights']> {
@@ -30,17 +30,13 @@ export class LightsService {
 
     const lights = await this.hue.getLights();
 
-    if (isLight(lights)) {
-      throw new Error('Lights not found');
-    }
-
     const lightsThatAreOn = lights.filter((light) => light.on);
     const lightsThatAreOff = lights.filter((light) => !light.on);
 
     // If more than half of the lights are on, we turn them off
     if (lightsThatAreOn.length >= lightsThatAreOff.length) {
       await Promise.all(
-        lightsThatAreOn.map((light) => this.set(light.name, false)),
+        lightsThatAreOn.map((light) => this.setOnOff(light.name, false)),
       );
 
       return lights.map((light) => ({ ...light, on: false }));
@@ -48,7 +44,7 @@ export class LightsService {
 
     // Otherwise we turn them on
     await Promise.all(
-      lightsThatAreOff.map((light) => this.set(light.name, true)),
+      lightsThatAreOff.map((light) => this.setOnOff(light.name, true)),
     );
 
     return lights.map((light) => ({ ...light, on: true }));
@@ -60,10 +56,24 @@ export class LightsService {
     await this.hue.storeState();
   }
 
-  async set(name: string, on: boolean): ReturnType<HueService['setLight']> {
+  async setOnOff(
+    name: string,
+    on: boolean,
+  ): ReturnType<HueService['setLightOnOff']> {
     this.logger.log(`Set light ${name} to ${on ? 'on' : 'off'}`);
 
-    const newState = await this.hue.setLight(name, on);
+    const newState = await this.hue.setLightOnOff(name, on);
+
+    return newState;
+  }
+
+  async setBrightness(
+    name: string,
+    value: number, // 1-100
+  ): ReturnType<HueService['setLightBrightness']> {
+    this.logger.log(`Set light ${name} brightness to ${value}`);
+
+    const newState = await this.hue.setLightBrightness(name, value);
 
     return newState;
   }
