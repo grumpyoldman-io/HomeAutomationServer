@@ -1,9 +1,9 @@
 {
   "name": "home-automation-server",
-  "version": "0.0.5",
+  "version": "0.1.0",
   "description": "A simple home automation server to toggle Philips Hue lights",
   "author": "Marvin de Bruin<hello@grumpyoldman.io>",
-  "license": "MIT",
+  "license": "Hippocratic-3.0",
   "engines": {
     "node": ">=0.16.16"
   },

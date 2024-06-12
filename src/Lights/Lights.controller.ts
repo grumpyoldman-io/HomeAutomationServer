@@ -6,11 +6,37 @@ import {
   HttpStatus,
   Param,
 } from '@nestjs/common';
-import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiOperation,
+  ApiParam,
+  ApiParamOptions,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 
 import { NotFoundError } from '../Errors';
 
 import { LightsService } from './Lights.service';
+
+const params: Record<string, ApiParamOptions> = {
+  name: {
+    name: 'name',
+    required: true,
+    description: 'Name of the light',
+  },
+  onOffValue: {
+    name: 'val',
+    required: true,
+    description: 'On/Off value of the light',
+    enum: ['on', 'off'],
+  },
+  brightnessValue: {
+    name: 'val',
+    required: true,
+    description: 'Brightness of the light',
+    type: 'number',
+  },
+};
 
 @Controller('lights')
 @ApiTags('Lights')
@@ -53,8 +79,12 @@ export class LightsController {
   @Header('Cache-Control', 'none')
   @ApiOperation({
     summary: 'Get status light status',
+    parameters: [params.name].map((param) => ({
+      ...param,
+      in: 'path',
+    })),
   })
-  @ApiParam({ name: 'name', required: true })
+  @ApiParam(params.name)
   @ApiResponse({ status: 200, description: 'Status of single light' })
   @ApiResponse({ status: 404, description: 'Light not found' })
   async light(
@@ -71,8 +101,12 @@ export class LightsController {
   @Header('Cache-Control', 'none')
   @ApiOperation({
     summary: 'Toggle a light on/off',
+    parameters: [params.name].map((param) => ({
+      ...param,
+      in: 'path',
+    })),
   })
-  @ApiParam({ name: 'name', required: true })
+  @ApiParam(params.name)
   @ApiResponse({ status: 200, description: 'Toggled single light' })
   @ApiResponse({ status: 404, description: 'Light not found' })
   async lightToggle(
@@ -89,9 +123,13 @@ export class LightsController {
   @Header('Cache-Control', 'none')
   @ApiOperation({
     summary: 'Set a light on/off',
+    parameters: [params.name, params.onOffValue].map((param) => ({
+      ...param,
+      in: 'path',
+    })),
   })
-  @ApiParam({ name: 'name', required: true })
-  @ApiParam({ name: 'val', required: true, enum: ['on', 'off'] })
+  @ApiParam(params.name)
+  @ApiParam(params.onOffValue)
   @ApiResponse({ status: 200, description: 'Set single light' })
   @ApiResponse({ status: 404, description: 'Light not found' })
   async lightSetOnOff(
@@ -108,10 +146,14 @@ export class LightsController {
   @Get(':name/set/brightness/:val')
   @Header('Cache-Control', 'none')
   @ApiOperation({
-    summary: 'Set a light on/off',
+    summary: 'Set the brightness of a light (0-100)',
+    parameters: [params.name, params.brightnessValue].map((param) => ({
+      ...param,
+      in: 'path',
+    })),
   })
-  @ApiParam({ name: 'name', required: true })
-  @ApiParam({ name: 'val', required: true, type: 'number' })
+  @ApiParam(params.name)
+  @ApiParam(params.brightnessValue)
   @ApiResponse({ status: 200, description: 'Set single light' })
   @ApiResponse({ status: 404, description: 'Light not found' })
   async lightSetBrightness(

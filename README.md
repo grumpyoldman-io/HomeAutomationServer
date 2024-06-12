@@ -25,13 +25,7 @@ prerequisites:
 1. A network with a Hue bridge
 2. A valid user and ip of the Hue bridge ([more here](https://github.com/peter-murray/node-hue-api#discover-and-connect-to-the-hue-bridge-for-the-first-time)).
 
-The server will connect to your local Hue Bridge on startup, and will expose the following endpoints:
-
-- (get) /lights -> Show status of all connected lights
-- (get) /lights/[name] -> Show status of light with specific name
-- (get) /lights/[name]/toggle -> Will switch a light on/off
-
-You can also check out the OpenApi specs on `/docs` or `/docs-json` when running the server
+The server will connect to your local Hue Bridge on startup, and will expose endpoints for you to call using GET requests. You can check out the OpenApi specs on `/docs` or `/docs-json` when running the server
 
 ## Running the app
 
