@@ -20,7 +20,9 @@ interface InternalState {
   ct?: number;
 }
 
-const STORE_FILE_PATH = resolve(cwd(), 'persist/stored-hue-state.json');
+const STORE_FILE_PATH =
+  process.env.STORE_FILE_PATH ??
+  resolve(cwd(), 'persist/stored-hue-state.json');
 
 @Injectable()
 export class HueService {

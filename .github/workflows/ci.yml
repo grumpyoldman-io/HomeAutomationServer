@@ -2,9 +2,9 @@ name: Continuous Integration
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ['main']
   pull_request:
-    branches: [ "main" ]
+    branches: ['main']
   schedule:
     - cron: '30 8 * * 1,2,3,4,5'
 
@@ -19,7 +19,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        language: [ 'typescript' ]
+        language: ['typescript']
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -37,6 +37,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+    env:
+      STORE_FILE_PATH: ${{ github.workspace }}/mock-store.json
     steps:
       - uses: actions/checkout@v3
       - name: Use Node.js
