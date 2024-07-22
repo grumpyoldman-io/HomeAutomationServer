@@ -3191,10 +3191,10 @@ graphemer@^1.4.0:
   resolved "https://registry.yarnpkg.com/graphemer/-/graphemer-1.4.0.tgz#fb2f1d55e0e3a1849aeffc90c4fa0dd53a0e66c6"
   integrity sha512-EtKwoO6kxCL9WO5xipiHTZlSzBm7WLT627TqC/uVRd0HKmq8NXyebnNYxDoBi7wt8eTWrUrKXCOVaFq9x1kgag==
 
-hap-nodejs@1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/hap-nodejs/-/hap-nodejs-1.0.0.tgz#77a396b1d017e527ab1c3e3597c0ce2094649db2"
-  integrity sha512-X992mqJ60hhApHriyK8QDRDA2lAOM3xA7x98ZpPNpQgf8y4YuapUfRcllvoxH7Aie/G5KRrZz/BNB9m+zFnDzw==
+hap-nodejs@1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/hap-nodejs/-/hap-nodejs-1.1.0.tgz#bdf7fc372a4b998937c6c6fc15a2347f5933867c"
+  integrity sha512-FVJotfbsUzBY7ydiz9cWDmlmyAHswh0AcLwGJ9T+SuRAVhZYsnoHRpom0si1mWzwXA2k0RqFOn52nssf0AlrGQ==
   dependencies:
     "@homebridge/ciao" "^1.3.0"
     "@homebridge/dbus-native" "^0.6.0"
