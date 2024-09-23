@@ -759,10 +759,10 @@
     webpack "5.94.0"
     webpack-node-externals "3.0.0"
 
-"@nestjs/common@10.4.2":
-  version "10.4.2"
-  resolved "https://registry.yarnpkg.com/@nestjs/common/-/common-10.4.2.tgz#6146411a7b7f6123f557fbaa89cfb951966be39a"
-  integrity sha512-7uLRj/1WBX93qM78keTE8b5SqIgz5Rhe0BPnOdCL1QnA7mLVcj0aEyLuHryeZJfx26FDoeAEMrLCC/RAdmIHog==
+"@nestjs/common@10.4.4":
+  version "10.4.4"
+  resolved "https://registry.yarnpkg.com/@nestjs/common/-/common-10.4.4.tgz#673d0eca273e1ab3a4d3ec9e212114b9f4fbf6e8"
+  integrity sha512-0j2/zqRw9nvHV1GKTktER8B/hIC/Z8CYFjN/ZqUuvwayCH+jZZBhCR2oRyuvLTXdnlSmtCAg2xvQ0ULqQvzqhA==
   dependencies:
     uid "2.0.2"
     iterare "1.2.1"
@@ -777,10 +777,10 @@
     dotenv-expand "10.0.0"
     lodash "4.17.21"
 
-"@nestjs/core@10.4.2":
-  version "10.4.2"
-  resolved "https://registry.yarnpkg.com/@nestjs/core/-/core-10.4.2.tgz#87a13112d61db0d69832643d5b0b29086f154282"
-  integrity sha512-h2sjNzFHzoxOHU5Ag/pCVn0CrYHKTa0HfjGAa6GOrffRAsIa1H2nJaUzg89yHZXkHgWi+UynRsp8A4HJ1JVg9w==
+"@nestjs/core@10.4.4":
+  version "10.4.4"
+  resolved "https://registry.yarnpkg.com/@nestjs/core/-/core-10.4.4.tgz#12cb1110da6d76e12ceccf0e92f6f5220fe27525"
+  integrity sha512-y9tjmAzU6LTh1cC/lWrRsCcOd80khSR0qAHAqwY2svbW+AhsR/XCzgpZrAAKJrm/dDfjLCZKyxJSayeirGcW5Q==
   dependencies:
     uid "2.0.2"
     "@nuxtjs/opencollective" "0.3.2"
@@ -794,10 +794,10 @@
   resolved "https://registry.yarnpkg.com/@nestjs/mapped-types/-/mapped-types-2.0.5.tgz#485d6b44e19779c98d04e52bd1d2bcc7001df0ea"
   integrity sha512-bSJv4pd6EY99NX9CjBIyn4TVDoSit82DUZlL4I3bqNfy5Gt+gXTa86i3I/i0iIV9P4hntcGM5GyO+FhZAhxtyg==
 
-"@nestjs/platform-express@10.4.2":
-  version "10.4.2"
-  resolved "https://registry.yarnpkg.com/@nestjs/platform-express/-/platform-express-10.4.2.tgz#1b81ed9fbde9b61b80feeb377e6172af4adb609e"
-  integrity sha512-WQVfUyAgMZqDXWc+sIdfWZRl6+CLZhS/GB70ZiKbMNiOETbfBisQoZ1S95o+ztXZC527HnPxvwiF3GPjG/trmg==
+"@nestjs/platform-express@10.4.4":
+  version "10.4.4"
+  resolved "https://registry.yarnpkg.com/@nestjs/platform-express/-/platform-express-10.4.4.tgz#582d375272207f8d1528f77ff470ba815d9d9846"
+  integrity sha512-y52q1MxhbHaT3vAgWd08RgiYon0lJgtTa8U6g6gV0KI0IygwZhDQFJVxnrRDUdxQGIP5CKHmfQu3sk9gTNFoEA==
   dependencies:
     body-parser "1.20.3"
     cors "2.8.5"
@@ -816,10 +816,10 @@
     jsonc-parser "3.3.1"
     pluralize "8.0.0"
 
-"@nestjs/swagger@7.4.1":
-  version "7.4.1"
-  resolved "https://registry.yarnpkg.com/@nestjs/swagger/-/swagger-7.4.1.tgz#e39babf14bf31fad6d9f214a804870248dfc3ca0"
-  integrity sha512-OvXv3xLrMfuIkCXLJECN339seySPnTWIgcKlWLEKNvaRjbUMC/Vu0v9+Gbry/PsNyrJdU3FaypdKaefoH1qumQ==
+"@nestjs/swagger@7.4.2":
+  version "7.4.2"
+  resolved "https://registry.yarnpkg.com/@nestjs/swagger/-/swagger-7.4.2.tgz#3b72eb8a6d1366e8e211f9a90681283bb18817e9"
+  integrity sha512-Mu6TEn1M/owIvAx2B4DUQObQXqo2028R2s9rSZ/hJEgBK95+doTwS0DjmVA2wTeZTyVtXOoN7CsoM5pONBzvKQ==
   dependencies:
     "@microsoft/tsdoc" "^0.15.0"
     "@nestjs/mapped-types" "2.0.5"
